@@ -1,0 +1,48 @@
+.cockpit-text {
+    font-family: monospace;
+    color: #98fb98;
+    position: absolute;
+    font-size: 14px;
+}
+
+/* left side */
+#hud-speed,
+#hud-thrust {
+    -webkit-transform: scale(0.8) scaleZ(1.0) skewX(33deg);
+    -webkit-transform-origin: 0% 0%;
+    -webkit-perspective: 200;
+    -webkit-perspective-origin: 50% 50%;
+    -moz-transform: scale(0.8) scaleZ(1.0) skewX(33deg);
+    -moz-transform-origin: 0% 0%;
+    -moz-perspective: 200;
+    -moz-perspective-origin: 50% 50%;
+}
+
+#hud-speed {
+    bottom: 24%;
+    left: 42.8%;
+}
+
+#hud-thrust {
+    bottom: 26%;
+    left: 42.4%;
+}
+
+/* right side */
+#hud-force {
+    -webkit-transform: scale(0.8) scaleZ(1.0) skewX(-33deg);
+    -webkit-transform-origin: 0% 0%;
+    -webkit-perspective: 200;
+    -webkit-perspective-origin: 50% 50%;
+    -moz-transform: scale(0.8) scaleZ(1.0) skewX(-33deg);
+    -moz-transform-origin: 0% 0%;
+    -moz-perspective: 200;
+    -moz-perspective-origin: 50% 50%;
+
+    left: 52%;
+    bottom: 24%;
+}
+
+.force-warning #hud-force {
+    color: #982222;
+}

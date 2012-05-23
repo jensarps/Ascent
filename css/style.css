@@ -1,0 +1,18 @@
+/* menu */
+@import "menu.css";
+
+/* cockpit hud */
+@import "cockpit.css";
+
+body {
+    background: #000;
+    color: #eee;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+
+    font-family: Monospace;
+    font-size: 10px;
+    text-align: center;
+}
+
