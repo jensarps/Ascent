@@ -53,7 +53,7 @@ define([
       this.moveListener = function (evt) {
         var halfHeight = screenUtil.height / 2;
         var halfWidth = screenUtil.width / 2;
-        this.cockpitY = ( halfHeight - evt.clientY ) / halfHeight * -0.8;
+        this.cockpitY = ( halfHeight - evt.clientY ) / halfHeight * 0.8;
         this.cockpitX = ( halfWidth - evt.clientX ) / halfWidth * 0.8;
       }.bind(this);
       document.body.addEventListener('mousemove', this.moveListener);
