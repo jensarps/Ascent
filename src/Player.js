@@ -1,9 +1,11 @@
 define([
   'src/screen-util',
-  'src/ships'
+  'src/ships',
+  'src/config'
 ], function(
   screenUtil,
-  ships
+  ships,
+  config
   ){
 
   var Player = function(scene, container, shipType){
@@ -37,6 +39,7 @@ define([
 
       // init controls
       var controls = this.controls = new THREE.SpaceshipControls(camera);
+      controls.invertYAxis = config.controls.invertYAxis;
       controls.movementSpeed = 0;
       controls.domElement = this.container;
       controls.rollSpeed = this.shipStats.rollSpeed;
@@ -53,7 +56,7 @@ define([
       this.moveListener = function (evt) {
         var halfHeight = screenUtil.height / 2;
         var halfWidth = screenUtil.width / 2;
-        this.cockpitY = ( halfHeight - evt.clientY ) / halfHeight * -0.8;
+        this.cockpitY = ( halfHeight - evt.clientY ) / halfHeight * 0.8 * ( config.controls.invertYAxis ? -1 : 1 );
         this.cockpitX = ( halfWidth - evt.clientX ) / halfWidth * 0.8;
       }.bind(this);
       document.body.addEventListener('mousemove', this.moveListener);
