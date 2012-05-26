@@ -55,3 +55,12 @@ originates from
 * Need more distributed lights. It might be realistic, but an object being
 invisible due to no light traveling in the camera's view direction isn't
 helpful
+
+#Libraries
+
+Ascent wouldn't work without the following third party libraries:
+
+* three.js - https://github.com/mrdoob/three.js/
+* Game Shim - https://github.com/toji/game-shim
+* require.js - https://github.com/jrburke/requirejs
+* cockpit.js - https://github.com/jensarps/cockpit.js
