@@ -48,6 +48,8 @@ reloading the page
 * Levels in campaigns must be able to depend on each other's completion; same
 goes for campaigns
 * Need proper models; most models don't have textures
+* Need sound
+* Need to be able to shoot at things
 * Need realistic light sources; there's light, but you can't see where it
 originates from
 * Need more distributed lights. It might be realistic, but an object being
