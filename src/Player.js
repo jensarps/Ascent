@@ -39,7 +39,6 @@ define([
 
       // init controls
       var controls = this.controls = new THREE.SpaceshipControls(camera, this.container, config);
-      controls.invertYAxis = config.controls.invertYAxis;
       controls.movementSpeed = 0;
       controls.domElement = this.container;
       controls.rollSpeed = this.shipStats.rollSpeed;
