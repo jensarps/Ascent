@@ -38,7 +38,7 @@ define([
       this.scene.add(camera);
 
       // init controls
-      var controls = this.controls = new THREE.SpaceshipControls(camera);
+      var controls = this.controls = new THREE.SpaceshipControls(camera, this.container, config);
       controls.invertYAxis = config.controls.invertYAxis;
       controls.movementSpeed = 0;
       controls.domElement = this.container;
