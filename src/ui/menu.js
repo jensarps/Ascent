@@ -34,6 +34,7 @@ define([
       options: {
         items:  [
           { text: 'Toggle Fullscreen', message: 'ui/fullscreen' },
+          { text: 'Invert Y-Axis: on', message: 'config/set', data: 'controls.invertYAxis', state: 'on'},
           { text: 'Back', message: 'menu/back' }
         ]
       },
