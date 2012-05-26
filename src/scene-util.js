@@ -28,12 +28,12 @@ define(function(){
       }
 
       var starsMaterials = [
+        new THREE.ParticleBasicMaterial({ color:0x555555, size:3, sizeAttenuation:false }),
         new THREE.ParticleBasicMaterial({ color:0x555555, size:2, sizeAttenuation:false }),
-        new THREE.ParticleBasicMaterial({ color:0x555555, size:1, sizeAttenuation:false }),
-        new THREE.ParticleBasicMaterial({ color:0x333333, size:2, sizeAttenuation:false }),
+        new THREE.ParticleBasicMaterial({ color:0x333333, size:3, sizeAttenuation:false }),
         new THREE.ParticleBasicMaterial({ color:0x3a3a3a, size:1, sizeAttenuation:false }),
-        new THREE.ParticleBasicMaterial({ color:0x1a1a1a, size:2, sizeAttenuation:false }),
-        new THREE.ParticleBasicMaterial({ color:0x1a1a1a, size:1, sizeAttenuation:false })
+        new THREE.ParticleBasicMaterial({ color:0x1a1a1a, size:3, sizeAttenuation:false }),
+        new THREE.ParticleBasicMaterial({ color:0x1a1a1a, size:2, sizeAttenuation:false })
       ];
 
       var stars;

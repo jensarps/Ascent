@@ -31,6 +31,12 @@ It's a mere skeleton right now, but basic functionality is in place, like
 adding new levels, pausing the game, a menu, a settings panel, loading models
 and so on.
 
+#Action
+
+To see it in action, just:
+* go here: http://jensarps.github.com/Ascent/
+* or, fork/clone it and run it locally
+
 #Open Issues
 
 Too many to list here. The first things that I can think of include:
@@ -42,6 +48,8 @@ reloading the page
 * Levels in campaigns must be able to depend on each other's completion; same
 goes for campaigns
 * Need proper models; most models don't have textures
+* Need sound
+* Need to be able to shoot at things
 * Need realistic light sources; there's light, but you can't see where it
 originates from
 * Need more distributed lights. It might be realistic, but an object being
