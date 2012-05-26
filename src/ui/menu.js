@@ -1,9 +1,11 @@
 define([
   'src/comm',
-  'src/level-registry'
+  'src/level-registry',
+  'src/config'
 ], function(
   comm,
-  levelRegistry
+  levelRegistry,
+  config
   ){
   var menu = {
 
@@ -55,9 +57,13 @@ define([
       this.parentNode.addEventListener('click', function(evt){
         if(evt.target.classList.contains('menu-item')){
           var dataset = evt.target.dataset;
-          comm.publish(dataset.topic, dataset.data);
+          if (dataset.state) {
+            this.toggleState(evt.target);
+          } else {
+            comm.publish(dataset.topic, dataset.data);
+          }
         }
-      });
+      }.bind(this));
     },
 
     setupCampaignPage:function () {
@@ -140,12 +146,17 @@ define([
       var node = document.createElement('div');
       items.forEach(function(item){
         var itemNode = document.createElement('div');
-        itemNode.innerHTML = item.text;
-        itemNode.className = 'menu-item';
         itemNode.dataset.topic = item.message;
         itemNode.dataset.data = item.data;
+        itemNode.className = 'menu-item';
+        itemNode.innerHTML = item.text;
+        if(item.state){
+          // need to fetch state from config
+          var state = config.getItem(item.data);
+          this.setState(itemNode, state ? 'on' : 'off');
+        }
         node.appendChild(itemNode);
-      });
+      }, this);
       this.parentNode.appendChild(node);
       return node;
     },
@@ -154,6 +165,22 @@ define([
       this.history.pop();
       var last = this.history.pop();
       this.show(last);
+    },
+
+    toggleState: function(node){
+      var map = ['on', 'off'];
+      var state = node.dataset.state;
+      var newState = map[(state == 'on') * 1];
+
+      this.setState(node, newState);
+
+      comm.publish(node.dataset.topic, [node.dataset.data, newState]);
+    },
+
+    setState: function(node, newState){
+      var text = node.innerHTML.split(':')[0];
+      node.innerHTML = text + ': ' + newState;
+      node.dataset.state = newState;
     }
   };
 
