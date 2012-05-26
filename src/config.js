@@ -1,0 +1,9 @@
+define({
+
+  controls: {
+
+    invertYAxis: true
+
+  }
+
+});
