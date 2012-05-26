@@ -38,7 +38,7 @@ define([
       this.scene.add(camera);
 
       // init controls
-      var controls = this.controls = new THREE.SpaceshipControls(camera, this.container, config);
+      var controls = this.controls = new THREE.SpaceshipControls(camera, document, config);
       controls.movementSpeed = 0;
       controls.domElement = this.container;
       controls.rollSpeed = this.shipStats.rollSpeed;
