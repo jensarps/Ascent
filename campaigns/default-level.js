@@ -34,9 +34,8 @@ define([
 
       this.player = new Player(scene, container, this.playerShip);
 
-      sceneUtil.addFog(scene);
       sceneUtil.addLights(scene);
-      sceneUtil.addStars(scene, 6371);
+      sceneUtil.addSkybox(scene, { folder: 'textures/skybox/nebula/' });
 
       this.initLevel();
     },
