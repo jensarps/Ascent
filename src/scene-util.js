@@ -96,7 +96,7 @@ define([
         depthWrite: false
       });
 
-      var mesh = new THREE.Mesh(new THREE.CubeGeometry(1000000, 1000000, 1000000, 1, 1, 1, null, true), material);
+      var mesh = new THREE.Mesh(new THREE.CubeGeometry(opts.size, opts.size, opts.size, 1, 1, 1, null, true), material);
       mesh.flipSided = true;
       scene.add(mesh);
     }
