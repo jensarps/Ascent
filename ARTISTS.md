@@ -5,7 +5,7 @@ This project covers art by the following artists:
 
 ##Models
 
-The "Pulsar" models is made by TurboSquid user "Angryfly", http://www.turbosquid.com/Search/Artists/Angryfly
+The "Pulsar" model is made by TurboSquid user "Angryfly", http://www.turbosquid.com/Search/Artists/Angryfly
 
 The "Feisar" model is made by TurboSquid user "charnel", http://www.turbosquid.com/Search/Artists/charnel
 
