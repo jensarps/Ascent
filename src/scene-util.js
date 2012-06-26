@@ -1,4 +1,6 @@
-define(function(){
+define([
+  'src/tools'
+], function(tools){
 
   var sceneUtil = {
 
@@ -67,6 +69,36 @@ define(function(){
 
       var ambientLight = new THREE.AmbientLight(/* 0x000000 */ 0xFFFFFF);
       scene.add(ambientLight);
+    },
+
+    addSkybox: function(scene, options){
+      var opts = tools.mixin({
+        folder: 'textures/skybox/default/',
+        filetype: 'png',
+        size: 1000000
+      }, options || {});
+
+      var urls = [];
+
+      ['x','y','z'].forEach(function(axis){
+        urls.push(opts.folder + 'pos' + axis + '.' + opts.filetype);
+        urls.push(opts.folder + 'neg' + axis + '.' + opts.filetype);
+      });
+      var textureCube = THREE.ImageUtils.loadTextureCube(urls);
+
+      var shader = THREE.ShaderUtils.lib["cube"];
+      shader.uniforms["tCube"].texture = textureCube;
+
+      var material = new THREE.ShaderMaterial({
+        fragmentShader: shader.fragmentShader,
+        vertexShader: shader.vertexShader,
+        uniforms: shader.uniforms,
+        depthWrite: false
+      });
+
+      var mesh = new THREE.Mesh(new THREE.CubeGeometry(opts.size, opts.size, opts.size, 1, 1, 1, null, true), material);
+      mesh.flipSided = true;
+      scene.add(mesh);
     }
   };
 
