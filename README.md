@@ -16,6 +16,9 @@ Ascent is a WebGL experiment.
 
 The setting is a space simulator.
 
+
+![image](https://lh3.googleusercontent.com/-NB4m0zflyXM/T-nIvBSzU9I/AAAAAAAAAIM/o8eA_3O5Itc/s961/ascent-skybox-2.png)
+
 #Goals
 
 The main goal of Ascent is to create a tool that makes it exceptionally easy
