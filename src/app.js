@@ -3,13 +3,15 @@ require([
   'src/ui/ui',
   'src/comm',
   'src/level-registry',
-  'campaigns/collection'
+  'campaigns/collection',
+  'lib/game-timer/timer'
 ], function(
   screenUtil,
   ui,
   comm,
   levelRegistry,
-  campaignCollection
+  campaignCollection,
+  Timer
 ){
 
   var app = {
@@ -53,6 +55,7 @@ require([
       container.appendChild(renderer.domElement);
 
       this.clock = new THREE.Clock();
+      this.timer = new Timer();
       this.stats = this.addStats(container);
       this.runSubscriptions();
     },
