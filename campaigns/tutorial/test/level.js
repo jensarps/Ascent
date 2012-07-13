@@ -72,7 +72,7 @@ define([
     },
 
     loadModels: function(){
-      this.modelsToLoad = 3;
+      this.modelsToLoad = 4;
 
       this.knaan = new Ship('knaan', this.scene, {x: 10000, y: 500 /* 500 */, z: -20000}, function(){
         this.onModelAdded();
@@ -89,6 +89,14 @@ define([
 
       // add follower
       this.follower = new Ship('pulsar', this.scene, {x: -50, y: 0, z: -200}, function(){
+        this.onModelAdded();
+      }.bind(this));
+
+      // add asteroids
+      this.asteroids = new AsteroidBelt(this.scene, {
+        position: { x: 1000, y: 100, z: -10000},
+        amount: 20
+      }, function(){
         this.onModelAdded();
       }.bind(this));
     },
