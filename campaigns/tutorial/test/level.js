@@ -131,7 +131,8 @@ define([
         objs.forEach(function(obj){
           //console.log(obj.object.name, obj.distance);
           if(obj.distance <= 50){
-            console.error('You hit ' + obj.object.name);
+            var entity = obj.object.parent || obj.object;
+            console.error('You hit ' + entity.name);
           }
         });
       }

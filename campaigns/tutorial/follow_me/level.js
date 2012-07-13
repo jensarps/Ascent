@@ -93,8 +93,11 @@ define([
       if(objs.length){
         objs.forEach(function(obj){
           //console.log(obj.object.name, obj.distance);
-          if(obj.distance <= 50 && obj.object.name != 'knaan'){ // the knaan detection still it broken
-            this.onLevelFail('You crashed (you hit ' + obj.object.name + ').');
+          if(obj.distance <= 50){
+            var entity = obj.object.parent || obj.object;
+            if(entity.name != 'knaan') { // the knaan detection still it broken
+              this.onLevelFail('You crashed (you hit ' + entity.name + ').');
+            }
           }
         }, this);
       }
