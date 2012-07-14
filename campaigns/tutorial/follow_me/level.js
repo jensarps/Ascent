@@ -70,7 +70,8 @@ define([
     onBeforeRender: function(delta){
       var player = this.player,
           scene = this.scene,
-          camera = player.camera;
+          camera = player.camera,
+          ray = player.ray;
 
       player.update(delta);
 
@@ -87,13 +88,16 @@ define([
       projector.unprojectVector(vector, camera);
       var target = vector.subSelf(camera.position).normalize();
 
-      var ray = new THREE.Ray( camera.position, target );
+      ray.setSource( camera.position, target );
       var objs = ray.intersectObjects(scene.children);
       if(objs.length){
         objs.forEach(function(obj){
           //console.log(obj.object.name, obj.distance);
-          if(obj.distance <= 50 && obj.object.name != 'knaan'){ // the knaan detection still it broken
-            this.onLevelFail('You crashed (you hit ' + obj.object.name + ').');
+          if(obj.distance <= 50){
+            var entity = obj.object.parent || obj.object;
+            if(entity.name != 'knaan') { // the knaan detection still it broken
+              this.onLevelFail('You crashed (you hit ' + entity.name + ').');
+            }
           }
         }, this);
       }

@@ -72,7 +72,7 @@ define([
     },
 
     loadModels: function(){
-      this.modelsToLoad = 3;
+      this.modelsToLoad = 4;
 
       this.knaan = new Ship('knaan', this.scene, {x: 10000, y: 500 /* 500 */, z: -20000}, function(){
         this.onModelAdded();
@@ -91,12 +91,21 @@ define([
       this.follower = new Ship('pulsar', this.scene, {x: -50, y: 0, z: -200}, function(){
         this.onModelAdded();
       }.bind(this));
+
+      // add asteroids
+      this.asteroids = new AsteroidBelt(this.scene, {
+        position: { x: 1000, y: 100, z: -10000},
+        amount: 20
+      }, function(){
+        this.onModelAdded();
+      }.bind(this));
     },
 
     onBeforeRender: function(delta){
       var player = this.player,
         scene = this.scene,
-        camera = player.camera;
+        camera = player.camera,
+        ray = player.ray;
 
       player.update(delta);
 
@@ -113,13 +122,17 @@ define([
       projector.unprojectVector(vector, camera);
       var target = vector.subSelf(camera.position).normalize();
 
-      var ray = new THREE.Ray( camera.position, target );
+      //var ray = new THREE.Ray( camera.position, target );
+
+      ray.setSource( camera.position, target );
+
       var objs = ray.intersectObjects(scene.children);
       if(objs.length){
         objs.forEach(function(obj){
           //console.log(obj.object.name, obj.distance);
           if(obj.distance <= 50){
-            console.error('You hit ' + obj.object.name);
+            var entity = obj.object.parent || obj.object;
+            console.error('You hit ' + entity.name);
           }
         });
       }
