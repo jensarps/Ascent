@@ -35,6 +35,7 @@ define([
 
     this.started = false;
     this.toLoad = 0;
+    this.maxLoad = 0;
 
     this._onInit = function () {
     };
@@ -49,7 +50,9 @@ define([
       this.player = new Player(scene, container, this.options.playerShip);
 
       sceneUtil.addLights(scene);
+
       this.toLoad++;
+      this.maxLoad++;
       sceneUtil.addSkybox(scene, { folder: 'textures/skybox/nebula/' }, this.onItemLoaded.bind(this, 'skybox'));
 
       this.initLevel();
@@ -59,8 +62,12 @@ define([
       this._onInit();
     };
 
-    this.onItemLoaded = function () {
-      --this.toLoad || this.onLevelReady();
+    this.onItemLoaded = function (type) {
+      this.toLoad--;
+      var msg = ( this.maxLoad - this.toLoad) + '/' + this.maxLoad;
+      console.log('loaded ' + msg, type);
+      comm.publish('level/asset-loading', msg);
+      this.toLoad || this.onLevelReady();
     };
 
     this.onLevelReady = function () {
@@ -82,16 +89,17 @@ define([
   Level.prototype = {
 
     addEntity: function (type, options) {
-console.log('adding entity:', type, options);
       var entity;
       switch (type.toLowerCase()) {
         case 'ship':
           this.toLoad++;
-          entity = new Ship(this.scene, options, this.onItemLoaded.bind(this));
+          this.maxLoad++;
+          entity = new Ship(this.scene, options, this.onItemLoaded.bind(this, type));
           break;
         case 'asteroidbelt':
           this.toLoad++;
-          entity = new AsteroidBelt(this.scene, options, this.onItemLoaded.bind(this));
+          this.maxLoad++;
+          entity = new AsteroidBelt(this.scene, options, this.onItemLoaded.bind(this, type));
           break;
       }
       return entity;
