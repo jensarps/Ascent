@@ -1,9 +1,11 @@
 define([
   'src/screen-util',
+  'src/registry',
   'src/ships',
   'src/config'
 ], function(
   screenUtil,
+  registry,
   ships,
   config
   ){
@@ -29,13 +31,21 @@ define([
 
     container: null,
 
+    level: null,
+
     ray: null,
 
     scene: null,
 
     shipStats: null,
 
+    timer: null,
+
     setup: function(){
+
+      this.timer = registry.get('timer');
+      this.level = registry.get('currentLevel');
+
       // init camera
       var camera = this.camera = new THREE.PerspectiveCamera(25, screenUtil.width / screenUtil.height, 50, 1e7);
       this.scene.add(camera);
@@ -49,7 +59,7 @@ define([
       controls.inertia = this.shipStats.inertia;
 
       // init cockpit
-      var cockpit = this.cockpit = new Cockpit('textures/cockpit.png');
+      var cockpit = this.cockpit = new Cockpit('textures/cockpit.png', this.timer);
 
       cockpit.addText('hud-speed', 'SPD:');
       cockpit.addText('hud-thrust', 'PWR:');
