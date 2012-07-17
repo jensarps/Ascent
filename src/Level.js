@@ -49,7 +49,6 @@ define([
       this.player = new Player(scene, container, this.options.playerShip);
 
       sceneUtil.addLights(scene);
-      sceneUtil.addSkybox(scene, { folder: 'textures/skybox/nebula/' }); // TODO: add onLoad cb
       this.toLoad++;
       sceneUtil.addSkybox(scene, { folder: 'textures/skybox/nebula/' }, this.onItemLoaded.bind(this, 'skybox'));
 
