@@ -3,8 +3,8 @@ define([
   'src/Flightplan',
   'src/tools',
 
-  '../follow_me/pulsar_schedule'
-], function (Level, Flightplan, tools, pulsarSchedule) {
+  './schedule'
+], function (Level, Flightplan, tools, schedule) {
 
   var level = new Level({
 
@@ -64,7 +64,7 @@ define([
 
   level.onBeforeStart(function () {
     this.pulsarFlightPlan = new Flightplan(this.pulsar.controls);
-    this.pulsarFlightPlan.setSchedule(pulsarSchedule);
+    this.pulsarFlightPlan.setSchedule(schedule);
 
     this.pulsarFlightPlan.start();
 
