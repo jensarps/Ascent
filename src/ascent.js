@@ -3,6 +3,7 @@ require([
   'src/ui/ui',
   'src/comm',
   'src/level-registry',
+  'src/registry',
   'campaigns/collection',
   'lib/game-timer/timer'
 ], function(
@@ -10,6 +11,7 @@ require([
   ui,
   comm,
   levelRegistry,
+  registry,
   campaignCollection,
   Timer
 ){
@@ -56,7 +58,10 @@ require([
       container.appendChild(renderer.domElement);
 
       this.clock = new THREE.Clock();
+      registry.set('clock', this.clock);
       this.timer = new Timer();
+      registry.set('timer', this.timer);
+
       this.stats = this.addStats(container);
       this.runSubscriptions();
     },
@@ -78,6 +83,7 @@ require([
         }
 
         this.level = levelRegistry.levels[level];
+        registry.set('currentLevel', this.level);
         this.level.setup(this.scene, this.container);
 
         screenUtil.setUpdateCallback(this.onWindowResize.bind(this));
