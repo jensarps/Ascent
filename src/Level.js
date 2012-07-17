@@ -50,6 +50,8 @@ define([
 
       sceneUtil.addLights(scene);
       sceneUtil.addSkybox(scene, { folder: 'textures/skybox/nebula/' }); // TODO: add onLoad cb
+      this.toLoad++;
+      sceneUtil.addSkybox(scene, { folder: 'textures/skybox/nebula/' }, this.onItemLoaded.bind(this, 'skybox'));
 
       this.initLevel();
     };
