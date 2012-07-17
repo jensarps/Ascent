@@ -1,6 +1,6 @@
 define([
   'campaigns/tutorial/follow_me/level',
-  'campaigns/tutorial/test/new_level'
+  'campaigns/tutorial/test/level'
 ], function (
   FollowMe,
   TestingGrounds
