@@ -6,16 +6,16 @@ define([
   ships
 ){
 
-  var Ship = function(type, scene, position, onAddedToScene, noControls){
-    this.name = type;
+  var Ship = function(scene, options, onAddedToScene, noControls){
+    this.name = options.type;
     this.scene = scene;
-    this.initialPosition = position;
+    this.initialPosition = options.position;
     this.onAddedToScene = onAddedToScene;
     this.hasControls = !noControls;
 
-    tools.mixin(this, ships[type]);
+    tools.mixin(this, ships[options.type]);
 
-    this.loadModel(position);
+    this.loadModel(options.position);
   };
 
   Ship.prototype = {

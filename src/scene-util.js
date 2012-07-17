@@ -57,21 +57,23 @@ define([
     },
 
     addLights: function (scene) {
-      var dirLight = new THREE.SpotLight(0xffffff);
-      dirLight.position.set(-1, 0, 1).normalize();
-      dirLight.castShadow = true;
-      scene.add(dirLight);
+      var light;
+      light = new THREE.DirectionalLight(0xffffff, 1, 0);
+      light.position.set(-1, 0, 1).normalize();
+      light.castShadow = true;
+      scene.add(light);
 
-      var dirLight = new THREE.SpotLight(0xffffff);
-      dirLight.position.set(1, 0, -1).normalize();
-      dirLight.castShadow = true;
-      scene.add(dirLight);
+      light = new THREE.DirectionalLight(0xffffff, 1, 0);
+      light.position.set(1, 0, -1).normalize();
+      light.castShadow = true;
+      scene.add(light);
 
-      var ambientLight = new THREE.AmbientLight(/* 0x000000 */ 0xFFFFFF);
-      scene.add(ambientLight);
+      light = new THREE.AmbientLight(0);
+      scene.add(light);
+
     },
 
-    addSkybox: function(scene, options){
+    addSkybox: function(scene, options, callback){
       var opts = tools.mixin({
         folder: 'textures/skybox/default/',
         filetype: 'png',
@@ -79,12 +81,15 @@ define([
       }, options || {});
 
       var urls = [];
+      var toLoad = 6;
 
       ['x','y','z'].forEach(function(axis){
         urls.push(opts.folder + 'pos' + axis + '.' + opts.filetype);
         urls.push(opts.folder + 'neg' + axis + '.' + opts.filetype);
       });
-      var textureCube = THREE.ImageUtils.loadTextureCube(urls);
+      var textureCube = THREE.ImageUtils.loadTextureCube(urls, undefined, function(){
+        --toLoad || callback();
+      });
 
       var shader = THREE.ShaderUtils.lib["cube"];
       shader.uniforms["tCube"].texture = textureCube;
@@ -100,6 +105,7 @@ define([
       mesh.flipSided = true;
       scene.add(mesh);
     }
+
   };
 
   return sceneUtil;

@@ -1,17 +1,26 @@
 define([
-  'src/level-registry',
-
-  // level files:
   'campaigns/tutorial/follow_me/level',
   'campaigns/tutorial/test/level'
-], function(levelRegistry){
+], function (
+  FollowMe,
+  TestingGrounds
+  ) {
 
-  levelRegistry.addCampaign('tutorial', {
+  var tutorial = {
+
+    id: 'tutorial',
 
     name: 'Tutorial',
 
-    description: 'The school: Earning your wings.'
+    description: 'The school: Earning your wings.',
 
-  });
+    levels: [
+      FollowMe,
+      TestingGrounds
+    ]
+
+  };
+
+  return tutorial;
 
 });

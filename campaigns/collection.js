@@ -1,8 +1,14 @@
 define([
+  'src/level-registry',
 
+  // campaign files:
   'campaigns/tutorial/campaign'
+], function(
+  levelRegistry,
 
-], function(){
-  /* This is a no-op module that just lists available campaigns */
-  return null;
+  tutorial
+  ){
+
+  levelRegistry.addCampaign(tutorial);
+
 });

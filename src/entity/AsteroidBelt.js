@@ -20,7 +20,6 @@ define([
     tools.mixin(this, ships['asteroid']);
 
     this.loadModel();
-    this.loadModel();
   };
 
   AsteroidBelt.prototype = {

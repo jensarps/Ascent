@@ -3,16 +3,18 @@ require([
   'src/ui/ui',
   'src/comm',
   'src/level-registry',
-  'campaigns/collection'
+  'campaigns/collection',
+  'lib/game-timer/timer'
 ], function(
   screenUtil,
   ui,
   comm,
   levelRegistry,
-  campaignCollection
+  campaignCollection,
+  Timer
 ){
 
-  var app = {
+  var ascent = {
 
     container: null,
 
@@ -21,6 +23,8 @@ require([
     lastDelta: null,
 
     clock: null,
+
+    timer: null,
 
     stats: null,
 
@@ -40,7 +44,6 @@ require([
       document.body.appendChild(container);
 
       window.scene = this.scene = new THREE.Scene();
-      console.log(this.scene);
 
       var renderer = this.renderer = new THREE.WebGLRenderer({
         clearColor: 0x000000,
@@ -53,6 +56,7 @@ require([
       container.appendChild(renderer.domElement);
 
       this.clock = new THREE.Clock();
+      this.timer = new Timer();
       this.stats = this.addStats(container);
       this.runSubscriptions();
     },
@@ -143,6 +147,6 @@ require([
     }
   };
 
-  app.init();
+  ascent.init();
 
 });
