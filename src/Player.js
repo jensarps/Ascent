@@ -79,6 +79,7 @@ define([
       var force = ( vel - controls.movementSpeed ) * 10;
       var forceLimitReached = Math.abs(force) > 3.75;
 
+      var state;
       if (forceLimitReached) {
         state = 'vibrate';
       } else {

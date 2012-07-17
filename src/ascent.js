@@ -147,6 +147,7 @@ require([
 
       var delta = this.clock.getDelta();
       this.level.onBeforeRender(delta);
+      this.timer.update(delta * 1000);
       this.renderer.render(this.scene, this.level.player.camera);
 
       this.stats.update();
