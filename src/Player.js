@@ -65,6 +65,7 @@ define([
     },
 
     update: function(delta){
+      // TODO: Move player's collision detection in here.
       var cockpit = this.cockpit,
         controls = this.controls;
 

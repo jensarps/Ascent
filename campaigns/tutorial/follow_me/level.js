@@ -1,27 +1,12 @@
 define([
-  'campaigns/default-level',
-  'src/level-registry',
-  'src/scene-util',
-  'src/tools',
-  'src/comm',
-  'src/Player',
-  'src/Ship',
-  'src/AsteroidBelt',
+  'src/Level',
   'src/Flightplan',
-  'campaigns/tutorial/follow_me/pulsar_schedule'
-], function(
-  defaultLevel,
-  levelRegistry,
-  sceneUtil,
-  tools,
-  comm,
-  Player,
-  Ship,
-  AsteroidBelt,
-  Flightplan,
-  pulsarSchedule
-){
-  levelRegistry.addLevel('tutorial', 'follow_me', tools.mixin(Object.create(defaultLevel), {
+  'src/tools',
+  
+  './pulsar_schedule'
+], function (Level, Flightplan, tools, pulsarSchedule) {
+
+  var level = new Level({
 
     name: 'Follow Me',
 
@@ -29,80 +14,70 @@ define([
 
     failMessage: 'You fell too far behind Cpt. Awesome.',
 
-    successMessage: 'Well done! Proceed to next task.',
+    successMessage: 'Well done! Proceed to next task.'
 
-    playerShip: 'pulsar',
+  });
 
-    pulsar: null,
+  level.onInit(function () {
 
-    pulsarFlightPlan: null,
+    this.knaan = this.addEntity('ship', {
+      type: 'knaan',
+      position: {x: 10000, y: 5000, z: -20000}
+    });
 
-    start: function(){
-      this.started = true;
-      this.pulsarFlightPlan.start();
-    },
+    this.pulsar = this.addShip('pulsar', {
+      position: {x: 0, y: 0, z: -200}
+    });
 
-    loadModels: function(){
-      this.modelsToLoad = 3;
+    this.addEntity('asteroidbelt', {
+      position: { x: 15000, y: 0, z: -14000},
+      amount: 100
+    });
 
-      this.knaan = new Ship('knaan', this.scene, {x: 10000, y: 5000 /* 500 */, z: -20000}, function(){
-        this.onModelAdded();
-      }.bind(this));
+  });
 
-      // add pulsar
-      var ship = this.pulsar = new Ship('pulsar', this.scene, {x: 0, y: 0, z: -200}, function(){
+  level.onBeforeStart(function () {
+    this.pulsarFlightPlan = new Flightplan(this.pulsar.controls);
+    this.pulsarFlightPlan.setSchedule(pulsarSchedule);
+    this.pulsarFlightPlan.start();
+  });
 
-        this.pulsarFlightPlan = new Flightplan(ship.controls);
-        this.pulsarFlightPlan.setSchedule(pulsarSchedule);
+  level.onUpdate(function (delta) {
 
-        this.onModelAdded();
-      }.bind(this));
+    this.pulsarFlightPlan.update(delta);
+    this.pulsar.update(delta);
 
-      // add asteroids
-      this.asteroids = new AsteroidBelt(this.scene, {
-        position: { x: 15000, y: 0, z: -14000},
-        amount: 100
-      }, function(){
-        this.onModelAdded();
-      }.bind(this));
-    },
-
-    onBeforeRender: function(delta){
-      var player = this.player,
-          scene = this.scene,
-          camera = player.camera,
-          ray = player.ray;
-
-      player.update(delta);
-
-      this.pulsarFlightPlan.update(delta);
-      this.pulsar.update(delta);
-
-      var dist = tools.getDistance(camera.position, this.pulsar.model.position);
-      if(dist > 2000){
-        this.onLevelFail(this.failMessage);
-      }
-
-      var projector = new THREE.Projector();
-      var vector = new THREE.Vector3(0, 0, 0);
-      projector.unprojectVector(vector, camera);
-      var target = vector.subSelf(camera.position).normalize();
-
-      ray.setSource( camera.position, target );
-      var objs = ray.intersectObjects(scene.children);
-      if(objs.length){
-        objs.forEach(function(obj){
-          //console.log(obj.object.name, obj.distance);
-          if(obj.distance <= 50){
-            var entity = obj.object.parent || obj.object;
-            if(entity.name != 'knaan') { // the knaan detection still it broken
-              this.onLevelFail('You crashed (you hit ' + entity.name + ').');
-            }
-          }
-        }, this);
-      }
+    var camera = this.player.camera;
+    var dist = tools.getDistance(camera.position, this.pulsar.model.position);
+    if (dist > 2000) {
+      this.onLevelFail(this.options.failMessage);
     }
 
-  }));
+    // TODO: Move player collision detection into player [player.collides() or smth.]
+    var projector = new THREE.Projector();
+    var vector = new THREE.Vector3(0, 0, 0);
+    projector.unprojectVector(vector, camera);
+    var target = vector.subSelf(camera.position).normalize();
+
+    // why is target !== camera.direction? check shooting_at_things!!
+
+    var ray = this.player.ray;
+    ray.setSource(camera.position, target);
+    var objs = ray.intersectObjects(scene.children);
+    if (objs.length) {
+      objs.forEach(function (obj) {
+        //console.log(obj.object.name, obj.distance);
+        if (obj.distance <= 50) {
+          var entity = obj.object.parent || obj.object;
+          if (entity.name != 'knaan') { // the knaan detection still it broken
+            this.onLevelFail('You crashed (you hit ' + entity.name + ').');
+          }
+        }
+      }, this);
+    }
+
+  });
+
+  return level;
 
 });

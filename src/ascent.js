@@ -14,7 +14,7 @@ require([
   Timer
 ){
 
-  var app = {
+  var ascent = {
 
     container: null,
 
@@ -23,6 +23,8 @@ require([
     lastDelta: null,
 
     clock: null,
+
+    timer: null,
 
     stats: null,
 
@@ -42,7 +44,6 @@ require([
       document.body.appendChild(container);
 
       window.scene = this.scene = new THREE.Scene();
-      console.log(this.scene);
 
       var renderer = this.renderer = new THREE.WebGLRenderer({
         clearColor: 0x000000,
@@ -146,6 +147,6 @@ require([
     }
   };
 
-  app.init();
+  ascent.init();
 
 });
