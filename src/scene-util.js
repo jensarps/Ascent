@@ -73,7 +73,7 @@ define([
 
     },
 
-    addSkybox: function(scene, options){
+    addSkybox: function(scene, options, callback){
       var opts = tools.mixin({
         folder: 'textures/skybox/default/',
         filetype: 'png',
@@ -81,12 +81,15 @@ define([
       }, options || {});
 
       var urls = [];
+      var toLoad = 6;
 
       ['x','y','z'].forEach(function(axis){
         urls.push(opts.folder + 'pos' + axis + '.' + opts.filetype);
         urls.push(opts.folder + 'neg' + axis + '.' + opts.filetype);
       });
-      var textureCube = THREE.ImageUtils.loadTextureCube(urls);
+      var textureCube = THREE.ImageUtils.loadTextureCube(urls, undefined, function(){
+        --toLoad || callback();
+      });
 
       var shader = THREE.ShaderUtils.lib["cube"];
       shader.uniforms["tCube"].texture = textureCube;
