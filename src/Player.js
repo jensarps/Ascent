@@ -11,6 +11,9 @@ define([
     this.shipStats = ships[shipType];
     this.ray = new THREE.ReusableRay();
 
+    this.projector = new THREE.Projector();
+    this.vector = new THREE.Vector3(0, 0, 0);
+
     this.setup();
   };
 
@@ -70,11 +73,13 @@ define([
     },
 
     detectCollision: function () {
-      var camera = this.camera;
-      var collidingObject;
+      var collidingObject,
+          camera = this.camera,
+          projector = this.projector,
+          vector = this.vector;
 
-      var projector = new THREE.Projector();
-      var vector = new THREE.Vector3(0, 0, 0);
+      vector.set(0, 0, 0);
+      // no need to reset the projector
       projector.unprojectVector(vector, camera);
       var target = vector.subSelf(camera.position).normalize();
 
@@ -85,7 +90,6 @@ define([
       var objs = ray.intersectObjects(scene.children);
       if (objs.length) {
         objs.some(function (obj) {
-          //console.log(obj.object.name, obj.distance);
           if (obj.distance <= 50) {
             var entity = obj.object.parent || obj.object;
             if (entity.name != 'knaan') { // the knaan detection still it broken
@@ -96,7 +100,7 @@ define([
         }, this);
       }
 
-      return collidingObject;
+      return collidingObject; // intentionally return undefined if nothing is hit
     },
 
     update: function (delta) {
