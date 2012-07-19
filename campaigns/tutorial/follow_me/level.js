@@ -2,12 +2,13 @@ define([
   'src/Level',
   'src/Flightplan',
   'src/tools',
-  
+  'src/registry',
   './pulsar_schedule'
 ], function (
   Level,
   Flightplan,
   tools,
+  registry,
   pulsarSchedule
 ) {
 
@@ -45,6 +46,11 @@ define([
     this.pulsarFlightPlan = new Flightplan(this.pulsar.controls);
     this.pulsarFlightPlan.setSchedule(pulsarSchedule);
     this.pulsarFlightPlan.start();
+
+    var timer = registry.get('timer');
+    this.winTimeout = timer.setTimeout(function(){
+      this.onLevelSuccess(this.options.successMessage);
+    }, 70000, this);
   });
 
   level.onUpdate(function (delta) {
@@ -55,11 +61,13 @@ define([
     var camera = this.player.camera;
     var dist = tools.getDistance(camera.position, this.pulsar.model.position);
     if (dist > 2000) {
+      this.timer.clearTimeout(this.winTimeout);
       this.onLevelFail(this.options.failMessage);
     }
 
     var collidingObject = this.player.detectCollision();
     if (collidingObject) {
+      this.timer.clearTimeout(this.winTimeout);
       this.onLevelFail('You crashed (you hit ' + collidingObject.name + ').');
     }
 
