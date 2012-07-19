@@ -3,14 +3,9 @@ define([
   'src/registry',
   'src/ships',
   'src/config'
-], function(
-  screenUtil,
-  registry,
-  ships,
-  config
-  ){
+], function (screenUtil, registry, ships, config) {
 
-  var Player = function(scene, container, shipType){
+  var Player = function (scene, container, shipType) {
     this.scene = scene;
     this.container = container;
     this.shipStats = ships[shipType];
@@ -41,7 +36,7 @@ define([
 
     timer: null,
 
-    setup: function(){
+    setup: function () {
 
       this.timer = registry.get('timer');
       this.level = registry.get('currentLevel');
@@ -74,10 +69,42 @@ define([
       document.body.addEventListener('mousemove', this.moveListener);
     },
 
-    update: function(delta){
-      // TODO: Move player's collision detection in here.
+    detectCollision: function () {
+      var camera = this.camera;
+      var collidingObject;
+
+      var projector = new THREE.Projector();
+      var vector = new THREE.Vector3(0, 0, 0);
+      projector.unprojectVector(vector, camera);
+      var target = vector.subSelf(camera.position).normalize();
+
+      // why is target !== camera.direction? check shooting_at_things!!
+
+      var ray = this.ray;
+      ray.setSource(camera.position, target);
+      var objs = ray.intersectObjects(scene.children);
+      if (objs.length) {
+        objs.some(function (obj) {
+          //console.log(obj.object.name, obj.distance);
+          if (obj.distance <= 50) {
+            var entity = obj.object.parent || obj.object;
+            if (entity.name != 'knaan') { // the knaan detection still it broken
+              collidingObject = entity;
+              return true;
+            }
+          }
+        }, this);
+      }
+
+      return collidingObject;
+    },
+
+    update: function (delta) {
+
+
       var cockpit = this.cockpit,
         controls = this.controls;
+      // TODO: Move player's collision detection in here.
 
       controls.update(delta);
 
@@ -106,14 +133,14 @@ define([
       cockpit.updateText('hud-force', 'G: ' + force.toFixed(2));
     },
 
-    onContainerDimensionsChanged: function(width, height){
+    onContainerDimensionsChanged: function (width, height) {
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();
 
       this.controls.onContainerDimensionsChanged(width, height);
     },
 
-    destroy: function(){
+    destroy: function () {
       document.body.removeEventListener('mousemove', this.moveListener);
       this.cockpit.destroy();
       this.controls.destroy();
