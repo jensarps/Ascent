@@ -1,18 +1,18 @@
 define([
   'src/screen-util',
+  'src/registry',
   'src/ships',
   'src/config'
-], function(
-  screenUtil,
-  ships,
-  config
-  ){
+], function (screenUtil, registry, ships, config) {
 
-  var Player = function(scene, container, shipType){
+  var Player = function (scene, container, shipType) {
     this.scene = scene;
     this.container = container;
     this.shipStats = ships[shipType];
     this.ray = new THREE.ReusableRay();
+
+    this.projector = new THREE.Projector();
+    this.vector = new THREE.Vector3(0, 0, 0);
 
     this.setup();
   };
@@ -29,13 +29,21 @@ define([
 
     container: null,
 
+    level: null,
+
     ray: null,
 
     scene: null,
 
     shipStats: null,
 
-    setup: function(){
+    timer: null,
+
+    setup: function () {
+
+      this.timer = registry.get('timer');
+      this.level = registry.get('currentLevel');
+
       // init camera
       var camera = this.camera = new THREE.PerspectiveCamera(25, screenUtil.width / screenUtil.height, 50, 1e7);
       this.scene.add(camera);
@@ -49,7 +57,7 @@ define([
       controls.inertia = this.shipStats.inertia;
 
       // init cockpit
-      var cockpit = this.cockpit = new Cockpit('textures/cockpit.png');
+      var cockpit = this.cockpit = new Cockpit('textures/cockpit.png', this.timer);
 
       cockpit.addText('hud-speed', 'SPD:');
       cockpit.addText('hud-thrust', 'PWR:');
@@ -64,10 +72,43 @@ define([
       document.body.addEventListener('mousemove', this.moveListener);
     },
 
-    update: function(delta){
-      // TODO: Move player's collision detection in here.
+    detectCollision: function () {
+      var collidingObject,
+          camera = this.camera,
+          projector = this.projector,
+          vector = this.vector;
+
+      vector.set(0, 0, 0);
+      // no need to reset the projector
+      projector.unprojectVector(vector, camera);
+      var target = vector.subSelf(camera.position).normalize();
+
+      // why is target !== camera.direction? check shooting_at_things!!
+
+      var ray = this.ray;
+      ray.setSource(camera.position, target);
+      var objs = ray.intersectObjects(scene.children);
+      if (objs.length) {
+        objs.some(function (obj) {
+          if (obj.distance <= 50) {
+            var entity = obj.object.parent || obj.object;
+            if (entity.name != 'knaan') { // the knaan detection still it broken
+              collidingObject = entity;
+              return true;
+            }
+          }
+        }, this);
+      }
+
+      return collidingObject; // intentionally return undefined if nothing is hit
+    },
+
+    update: function (delta) {
+
+
       var cockpit = this.cockpit,
         controls = this.controls;
+      // TODO: Move player's collision detection in here.
 
       controls.update(delta);
 
@@ -79,6 +120,7 @@ define([
       var force = ( vel - controls.movementSpeed ) * 10;
       var forceLimitReached = Math.abs(force) > 3.75;
 
+      var state;
       if (forceLimitReached) {
         state = 'vibrate';
       } else {
@@ -95,14 +137,14 @@ define([
       cockpit.updateText('hud-force', 'G: ' + force.toFixed(2));
     },
 
-    onContainerDimensionsChanged: function(width, height){
+    onContainerDimensionsChanged: function (width, height) {
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();
 
       this.controls.onContainerDimensionsChanged(width, height);
     },
 
-    destroy: function(){
+    destroy: function () {
       document.body.removeEventListener('mousemove', this.moveListener);
       this.cockpit.destroy();
       this.controls.destroy();

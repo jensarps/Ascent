@@ -3,6 +3,7 @@ define([
   'src/scene-util',
   'src/comm',
   'src/Player',
+  'src/registry',
 
   'src/entity/Ship',
   'src/entity/Asteroid',
@@ -12,6 +13,7 @@ define([
   sceneUtil,
   comm,
   Player,
+  registry,
   Ship,
   Asteroid,
   AsteroidBelt

@@ -2,9 +2,15 @@ define([
   'src/Level',
   'src/Flightplan',
   'src/tools',
-  
+  'src/registry',
   './pulsar_schedule'
-], function (Level, Flightplan, tools, pulsarSchedule) {
+], function (
+  Level,
+  Flightplan,
+  tools,
+  registry,
+  pulsarSchedule
+) {
 
   var level = new Level({
 
@@ -40,6 +46,11 @@ define([
     this.pulsarFlightPlan = new Flightplan(this.pulsar.controls);
     this.pulsarFlightPlan.setSchedule(pulsarSchedule);
     this.pulsarFlightPlan.start();
+
+    var timer = registry.get('timer');
+    this.winTimeout = timer.setTimeout(function(){
+      this.onLevelSuccess(this.options.successMessage);
+    }, 70000, this);
   });
 
   level.onUpdate(function (delta) {
@@ -50,30 +61,14 @@ define([
     var camera = this.player.camera;
     var dist = tools.getDistance(camera.position, this.pulsar.model.position);
     if (dist > 2000) {
+      this.timer.clearTimeout(this.winTimeout);
       this.onLevelFail(this.options.failMessage);
     }
 
-    // TODO: Move player collision detection into player [player.collides() or smth.]
-    var projector = new THREE.Projector();
-    var vector = new THREE.Vector3(0, 0, 0);
-    projector.unprojectVector(vector, camera);
-    var target = vector.subSelf(camera.position).normalize();
-
-    // why is target !== camera.direction? check shooting_at_things!!
-
-    var ray = this.player.ray;
-    ray.setSource(camera.position, target);
-    var objs = ray.intersectObjects(scene.children);
-    if (objs.length) {
-      objs.forEach(function (obj) {
-        //console.log(obj.object.name, obj.distance);
-        if (obj.distance <= 50) {
-          var entity = obj.object.parent || obj.object;
-          if (entity.name != 'knaan') { // the knaan detection still it broken
-            this.onLevelFail('You crashed (you hit ' + entity.name + ').');
-          }
-        }
-      }, this);
+    var collidingObject = this.player.detectCollision();
+    if (collidingObject) {
+      this.timer.clearTimeout(this.winTimeout);
+      this.onLevelFail('You crashed (you hit ' + collidingObject.name + ').');
     }
 
   });

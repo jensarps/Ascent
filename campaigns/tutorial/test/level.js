@@ -4,7 +4,12 @@ define([
   'src/tools',
 
   './schedule'
-], function (Level, Flightplan, tools, schedule) {
+], function (
+  Level,
+  Flightplan,
+  tools,
+  schedule
+) {
 
   var level = new Level({
 
@@ -86,26 +91,11 @@ define([
     //var dist = tools.getDistance(camera.position, this.pulsar.model.position);
     //console.log(dist);
 
-
-    var projector = new THREE.Projector();
-    var vector = new THREE.Vector3(0, 0, 0);
-    projector.unprojectVector(vector, camera);
-    var target = vector.subSelf(camera.position).normalize();
-
-    //var ray = new THREE.Ray( camera.position, target );
-
-    ray.setSource( camera.position, target );
-
-    var objs = ray.intersectObjects(scene.children);
-    if(objs.length){
-      objs.forEach(function(obj){
-        //console.log(obj.object.name, obj.distance);
-        if(obj.distance <= 50){
-          var entity = obj.object.parent || obj.object;
-          console.error('You hit ' + entity.name);
-        }
-      });
+    var collidingObject = this.player.detectCollision();
+    if (collidingObject) {
+      console.error('You crashed (you hit ' + collidingObject.name + ').');
     }
+
     /*
      var projector = new THREE.Projector();
      var vector = new THREE.Vector3(10000, 500, -20000);
