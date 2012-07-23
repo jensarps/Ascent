@@ -1,3 +1,11 @@
+/*
+
+Parts of the radar code inspired by Taylor Clark's Webspace Combat:
+
+http://www.taylorclarksoftware.com/webspacecombat/
+
+*/
+
 define([], function () {
 
   var RadarDetector = function (camera, objects) {
