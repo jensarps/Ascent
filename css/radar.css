@@ -1,0 +1,29 @@
+#radar {
+    display: none;
+    width: 180px;
+    height: 180px;
+    position: absolute;
+    top: 50%;
+    left: 15%;
+    border: solid 1px paleGreen;
+    border-radius: 5px;
+    z-index: 1000000;
+    margin-top: -90px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.3) url(../textures/grid.png) center;
+}
+
+.radar #radar {
+    display: block;
+}
+
+#radar .object {
+    position: absolute;
+}
+
+#radarInfo {
+    position: absolute;
+    bottom: 2px;
+    left: 5px;
+    color: paleGreen;
+}
