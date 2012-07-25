@@ -4,6 +4,7 @@ require([
   'src/comm',
   'src/level-registry',
   'src/registry',
+  'src/input/Controller',
   'campaigns/collection',
   'lib/game-timer/timer'
 ], function(
@@ -12,6 +13,7 @@ require([
   comm,
   levelRegistry,
   registry,
+  InputController,
   campaignCollection,
   Timer
 ){
@@ -39,6 +41,8 @@ require([
     init: function() {
 
       if (!Detector.webgl) Detector.addGetWebGLMessage();
+
+      this.inputController = new InputController();
 
       ui.init();
 
