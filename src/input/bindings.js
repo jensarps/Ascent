@@ -11,9 +11,23 @@ define(function(){
       up: true
     },
 
+    decelerate: {
+      device: KEYBOARD,
+      key: 83, // s
+      down: true,
+      up: true
+    },
+
     rollLeft: {
       device: KEYBOARD,
       key: 81, // q
+      down: true,
+      up: true
+    },
+
+    rollRight: {
+      device: KEYBOARD,
+      key: 69, // e
       down: true,
       up: true
     },
