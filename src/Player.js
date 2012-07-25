@@ -2,8 +2,9 @@ define([
   'src/screen-util',
   'src/registry',
   'src/ships',
-  'src/config'
-], function (screenUtil, registry, ships, config) {
+  'src/config',
+  'src/controls/SpaceshipControls'
+], function (screenUtil, registry, ships, config, SpaceshipControls) {
 
   var Player = function (scene, container, shipType) {
     this.scene = scene;
@@ -49,7 +50,7 @@ define([
       this.scene.add(camera);
 
       // init controls
-      var controls = this.controls = new THREE.SpaceshipControls(camera, document, config);
+      var controls = this.controls = new SpaceshipControls(camera, document, config);
       controls.movementSpeed = 0;
       controls.domElement = this.container;
       controls.rollSpeed = this.shipStats.rollSpeed;
