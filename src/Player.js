@@ -84,8 +84,6 @@ define([
       projector.unprojectVector(vector, camera);
       var target = vector.subSelf(camera.position).normalize();
 
-      // why is target !== camera.direction? check shooting_at_things!!
-
       var ray = this.ray;
       ray.setSource(camera.position, target);
       var objs = ray.intersectObjects(scene.children);
@@ -109,7 +107,6 @@ define([
 
       var cockpit = this.cockpit,
         controls = this.controls;
-      // TODO: Move player's collision detection in here.
 
       controls.update(delta);
 
@@ -141,8 +138,6 @@ define([
     onContainerDimensionsChanged: function (width, height) {
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();
-
-      this.controls.onContainerDimensionsChanged(width, height);
     },
 
     destroy: function () {

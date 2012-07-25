@@ -63,8 +63,6 @@ define([
 
     this.updateMovementVector();
     this.updateRotationVector();
-    this.onContainerDimensionsChanged();
-
   };
 
   SpaceshipControls.prototype = {
@@ -177,31 +175,6 @@ define([
       rotation.normalize();
 
       return rotation;
-    },
-
-    onContainerDimensionsChanged: function () {
-
-      // TODO: This isn't needed anymore
-      console.error('Player.onContainerDimensionsChanged is deprecated.');
-      return;
-
-      var dimensions;
-
-      if (this.domElement != document) {
-        dimensions = {
-          size: [ this.domElement.offsetWidth, this.domElement.offsetHeight ],
-          offset: [ this.domElement.offsetLeft, this.domElement.offsetTop ]
-        };
-      } else {
-        dimensions = {
-          size: [ window.innerWidth, window.innerHeight ],
-          offset: [ 0, 0 ]
-        };
-      }
-      this.containerDimensions = dimensions;
-    },
-
-    destroy: function () {
     }
 
   };
