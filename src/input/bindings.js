@@ -6,14 +6,14 @@ define(function(){
 
     accelerate: {
       device: KEYBOARD,
-      key: 87,
+      key: 87, // w
       down: true,
       up: true
     },
 
     rollLeft: {
       device: KEYBOARD,
-      key: 81,
+      key: 81, // q
       down: true,
       up: true
     },
@@ -30,7 +30,14 @@ define(function(){
 
     toggleRadar: {
       device: KEYBOARD,
-      key: 82,
+      key: 82, // r
+      down: true,
+      up: false
+    },
+
+    focusNext: {
+      device: KEYBOARD,
+      key: 84, // t
       down: true,
       up: false
     }
