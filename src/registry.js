@@ -1,13 +1,16 @@
-define(function(){
+define(function () {
 
-    var _registry = {};
+  var _registry = {};
 
-    return {
-      get: function(id){
-        return _registry[id];
-      },
-      set: function(id, item){
-        _registry[id] = item;
-      }
-    };
+  return {
+    get: function (id) {
+      return _registry[id];
+    },
+    set: function (id, item) {
+      _registry[id] = item;
+    },
+    remove: function (id) {
+      delete _registry[id];
+    }
+  };
 });
