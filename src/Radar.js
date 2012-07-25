@@ -1,9 +1,11 @@
 define([
   'src/RadarDetector',
-  'src/tools'
+  'src/tools',
+  'src/registry'
 ], function(
   RadarDetector,
-  tools
+  tools,
+  registry
 ){
 
   // FIXME: key events do not belong here!
@@ -14,6 +16,8 @@ define([
     this.radarDetector = new RadarDetector(player.camera, this.objects);
     this.cockpit = player.cockpit;
     this.camera = player.camera;
+
+    this.input = registry.get('input');
 
     this.setup();
   };
@@ -42,16 +46,6 @@ define([
       this.infoNode = document.createElement('div');
       this.infoNode.id = 'radarInfo';
       this.radarNode.appendChild(this.infoNode);
-
-      this.keyPressListener = function(evt){
-        console.log(evt.keyCode);
-        if(evt.keyCode == 114){
-          return this.toggleRadar();
-        } else if (evt.keyCode == 116) {
-          this.focusNext = true;
-        }
-      }.bind(this);
-      document.addEventListener('keypress', this.keyPressListener, false);
     },
 
     addObject: function(object){
@@ -93,10 +87,16 @@ define([
     },
 
     update: function(){
+      if(this.input.toggleRadar){
+        this.input.toggleRadar = false;
+        this.toggleRadar();
+      }
+
+      // TODO: Only do this if radar is actually visible
       this.radarDetector.update();
-      if(this.focusNext){
+      if(this.input.focusNext){
         this.focusNextObject();
-        this.focusNext = false;
+        this.input.focusNext = false;
       }
       this.objects.forEach(function(object, index){
         // TODO: The following is a disaster regarding performance
@@ -116,7 +116,6 @@ define([
     },
 
     destroy: function(){
-      document.removeEventListener('keypress', this.keyPressListener, false);
       // TODO: destroy nodes.
     }
 
