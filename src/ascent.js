@@ -88,7 +88,7 @@ require([
 
         this.level = levelRegistry.levels[level];
         registry.set('currentLevel', this.level);
-        this.level.setup(this.scene, this.container);
+        this.level.setup(this.scene);
 
         screenUtil.setUpdateCallback(this.onWindowResize.bind(this));
       }.bind(this));

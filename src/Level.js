@@ -46,7 +46,7 @@ define([
     this._onUpdate = function () {
     };
 
-    this.setup = function (scene, container) {
+    this.setup = function (scene) {
       this.scene = scene;
 
       this.player = new Player(scene, this.options.playerShip);
