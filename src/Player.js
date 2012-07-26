@@ -30,6 +30,8 @@ define([
 
     container: null,
 
+    input: null,
+
     level: null,
 
     ray: null,
@@ -44,6 +46,7 @@ define([
 
       this.timer = registry.get('timer');
       this.level = registry.get('currentLevel');
+      this.input = registry.get('input');
 
       // init camera
       var camera = this.camera = new THREE.PerspectiveCamera(25, screenUtil.width / screenUtil.height, 50, 1e7);
@@ -63,14 +66,6 @@ define([
       cockpit.addText('hud-speed', 'SPD:');
       cockpit.addText('hud-thrust', 'PWR:');
       cockpit.addText('hud-force', 'F:');
-
-      this.moveListener = function (evt) {
-        var halfHeight = screenUtil.height / 2;
-        var halfWidth = screenUtil.width / 2;
-        this.cockpitY = ( halfHeight - evt.clientY ) / halfHeight * 0.8 * ( config.controls.invertYAxis ? -1 : 1 );
-        this.cockpitX = ( halfWidth - evt.clientX ) / halfWidth * 0.8;
-      }.bind(this);
-      document.body.addEventListener('mousemove', this.moveListener);
     },
 
     detectCollision: function () {
@@ -112,6 +107,8 @@ define([
 
       // update cockpit. This could use some love.
 
+      this.cockpitX = ( this.input.yaw || 0 ) * 0.8;
+      this.cockpitY = ( this.input.pitch || 0 ) * -0.8;
       cockpit.move(this.cockpitX, this.cockpitY);
 
       var vel = Math.max(0, controls.velocity - controls.breakingForce);
@@ -141,9 +138,7 @@ define([
     },
 
     destroy: function () {
-      document.body.removeEventListener('mousemove', this.moveListener);
       this.cockpit.destroy();
-      this.controls.destroy();
     }
 
   };
