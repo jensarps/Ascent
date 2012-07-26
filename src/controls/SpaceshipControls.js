@@ -7,17 +7,10 @@ define([
   'src/registry'
 ], function (registry) {
 
-  var SpaceshipControls = function (object, domElement, config) {
+  var SpaceshipControls = function (object, config) {
 
     this.object = object;
-
-    this.domElement = ( domElement !== undefined ) ? domElement : document;
-    if (domElement && domElement !== document) {
-      this.domElement.setAttribute('tabindex', -1);
-    }
-
     this.config = config;
-
     this.input = registry.get('input');
 
     // initial values
