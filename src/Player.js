@@ -8,7 +8,6 @@ define([
 
   var Player = function (scene, container, shipType) {
     this.scene = scene;
-    this.container = container;
     this.shipStats = ships[shipType];
     this.ray = new THREE.ReusableRay();
 
@@ -27,8 +26,6 @@ define([
     cockpitX: 0,
 
     cockpitY: 0,
-
-    container: null,
 
     input: null,
 
@@ -55,7 +52,6 @@ define([
       // init controls
       var controls = this.controls = new SpaceshipControls(camera);
       controls.movementSpeed = 0;
-      controls.domElement = this.container;
       controls.rollSpeed = this.shipStats.rollSpeed;
       controls.maxSpeed = this.shipStats.maxSpeed;
       controls.inertia = this.shipStats.inertia;
