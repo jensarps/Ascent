@@ -39,16 +39,16 @@ define([
     },
 
     onMouseDown: function(evt){
-      if(evt.keyCode in this.bindings){
+      if('button' in this.bindings){
         var binding = this.bindings[evt.keyCode];
-        if(binding.up){
           this.input[binding.description] = false;
+        if(binding.down){
         }
       }
     },
 
     onMouseUp: function(evt){
-      if(evt.keyCode in this.bindings){
+      if('button' in this.bindings){
         var binding = this.bindings[evt.keyCode];
         if(binding.up){
           this.input[binding.description] = false;
