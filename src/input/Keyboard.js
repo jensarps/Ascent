@@ -14,7 +14,7 @@ define([], function(){
       if(evt.keyCode in this.bindings){
         var binding = this.bindings[evt.keyCode];
         if(binding.down){
-          this.input[binding.description] = true;
+          this.input[binding.description] = 1;
         }
       }
     },
@@ -23,7 +23,7 @@ define([], function(){
       if(evt.keyCode in this.bindings){
         var binding = this.bindings[evt.keyCode];
         if(binding.up){
-          this.input[binding.description] = false;
+          this.input[binding.description] = 0;
         }
       }
     },

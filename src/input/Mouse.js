@@ -41,8 +41,8 @@ define([
     onMouseDown: function(evt){
       if('button' in this.bindings){
         var binding = this.bindings[evt.keyCode];
-          this.input[binding.description] = false;
         if(binding.down){
+          this.input[binding.description] = 1;
         }
       }
     },
@@ -51,7 +51,7 @@ define([
       if('button' in this.bindings){
         var binding = this.bindings[evt.keyCode];
         if(binding.up){
-          this.input[binding.description] = false;
+          this.input[binding.description] = 0;
         }
       }
     },
