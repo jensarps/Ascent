@@ -49,7 +49,7 @@ define([
     this.setup = function (scene, container) {
       this.scene = scene;
 
-      this.player = new Player(scene, container, this.options.playerShip);
+      this.player = new Player(scene, this.options.playerShip);
 
       sceneUtil.addLights(scene);
 

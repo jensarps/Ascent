@@ -6,7 +6,7 @@ define([
   'src/controls/SpaceshipControls'
 ], function (screenUtil, registry, ships, config, SpaceshipControls) {
 
-  var Player = function (scene, container, shipType) {
+  var Player = function (scene, shipType) {
     this.scene = scene;
     this.shipStats = ships[shipType];
     this.ray = new THREE.ReusableRay();
