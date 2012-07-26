@@ -61,19 +61,14 @@ define([
 
     update: function (delta) {
 
-      if(this.input.accelerate){
-        this.velocity = Math.min(1, this.velocity + 0.015);
-      }
-      if(this.input.decelerate){
-        this.velocity = Math.max(0, this.velocity - 0.015);
-      }
+      var acceleration = this.input.accelerate - this.input.decelerate;
+      this.velocity = Math.min(1, Math.max(0, this.velocity + ( acceleration * 0.015)));
 
       this.moveState.rollLeft = this.input.rollLeft * 1;
       this.moveState.rollRight =this.input.rollRight * 1;
 
       this.moveState.yawLeft = this.input.yaw;
       this.moveState.pitchDown = this.input.pitch;
-
 
       this.updateMovementVector();
       this.updateRotationVector();
