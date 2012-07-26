@@ -16,7 +16,7 @@ define([
     var input = {};
     registry.set('input', input);
 
-    this.setupBindings(bindings);
+    this.setupBindings(bindings, input);
 
     this.keybord = new Keyboard(this.bindings.keyboard, input);
     this.mouse = new Mouse(this.bindings.mouse, input);
@@ -24,9 +24,10 @@ define([
 
   InputController.prototype = {
 
-    setupBindings: function(bindings){
+    setupBindings: function(bindings, input){
       Object.keys(bindings).forEach(function(description){
         var binding = bindings[description];
+        input[description] = 0;
 
         if(binding.device == 'keyboard'){
           this.bindings[binding.device][binding.key] = {
@@ -44,7 +45,7 @@ define([
 
     bindings: {
       keyboard: {},
-      mouse: {},
+      mouse: {}
     },
 
     destroy: function(){

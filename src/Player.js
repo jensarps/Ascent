@@ -103,8 +103,8 @@ define([
 
       // update cockpit. This could use some love.
 
-      this.cockpitX = ( this.input.yaw || 0 ) * 0.8;
-      this.cockpitY = ( this.input.pitch || 0 ) * -0.8;
+      this.cockpitX = this.input.yaw * 0.8;
+      this.cockpitY = this.input.pitch * -0.8;
       cockpit.move(this.cockpitX, this.cockpitY);
 
       var vel = Math.max(0, controls.velocity - controls.breakingForce);

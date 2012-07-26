@@ -68,11 +68,11 @@ define([
         this.velocity = Math.max(0, this.velocity - 0.015);
       }
 
-      this.moveState.rollLeft = ( this.input.rollLeft || 0 ) * 1;
-      this.moveState.rollRight = ( this.input.rollRight || 0 ) * 1;
+      this.moveState.rollLeft = this.input.rollLeft * 1;
+      this.moveState.rollRight =this.input.rollRight * 1;
 
-      this.moveState.yawLeft = this.input.yaw || 0;
-      this.moveState.pitchDown = this.input.pitch || 0;
+      this.moveState.yawLeft = this.input.yaw;
+      this.moveState.pitchDown = this.input.pitch;
 
 
       this.updateMovementVector();
