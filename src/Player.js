@@ -50,7 +50,7 @@ define([
       this.scene.add(camera);
 
       // init controls
-      var controls = this.controls = new SpaceshipControls(camera, config);
+      var controls = this.controls = new SpaceshipControls(camera);
       controls.movementSpeed = 0;
       controls.domElement = this.container;
       controls.rollSpeed = this.shipStats.rollSpeed;

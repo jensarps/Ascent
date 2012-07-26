@@ -7,10 +7,9 @@ define([
   'src/registry'
 ], function (registry) {
 
-  var SpaceshipControls = function (object, config) {
+  var SpaceshipControls = function (object) {
 
     this.object = object;
-    this.config = config;
     this.input = registry.get('input');
 
     // initial values
