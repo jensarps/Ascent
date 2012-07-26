@@ -34,8 +34,6 @@ define([
 
     this.tmpQuaternion = new THREE.Quaternion();
 
-    this.mouseStatus = 0;
-
     this.moveState = {
       up: 0,
       down: 0,
