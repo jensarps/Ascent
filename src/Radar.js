@@ -30,6 +30,8 @@ define([
 
     focusedObject: null,
 
+    isVisible: false,
+
     nodes: null,
 
     objects: null,
@@ -82,17 +84,26 @@ define([
       return node;
     },
 
-    toggleRadar: function(){
-      document.documentElement.classList.toggle('radar');
+    showRadar: function(){
+      document.documentElement.classList.add('radar');
+    },
+
+    hideRadar: function(){
+      document.documentElement.classList.remove('radar');
     },
 
     update: function(){
-      if(this.input.toggleRadar){
-        this.input.toggleRadar = false;
-        this.toggleRadar();
+      if(!this.isVisible && !this.input.toggleRadar){
+        return;
       }
 
-      // TODO: Only do this if radar is actually visible
+      if(this.isVisible && this.input.toggleRadar){
+        this.isVisible = false;
+        this.input.toggleRadar = false;
+        this.hideRadar();
+        return;
+      }
+
       this.radarDetector.update();
       if(this.input.focusNext){
         this.focusNextObject();
@@ -112,6 +123,12 @@ define([
       if(this.focusedObject){
         var dist = ( tools.getDistance(this.camera.position, this.focusedObject.model.position) / 1000 ).toFixed(2);
         this.infoNode.innerHTML = 'type: ' + this.focusedObject.name + ' | dist: ' + dist;
+      }
+
+      if(this.input.toggleRadar){
+        this.isVisible = true;
+        this.input.toggleRadar = false;
+        this.showRadar();
       }
     },
 
