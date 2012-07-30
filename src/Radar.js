@@ -40,6 +40,8 @@ define([
 
     radarNode: null,
 
+    size: 0,
+
     setup: function(){
       this.radarNode = document.createElement('div');
       this.radarNode.id = 'radar';
@@ -104,6 +106,10 @@ define([
         return;
       }
 
+      if(!this.size){
+        this.size = this.radarNode.offsetWidth;
+      }
+
       this.radarDetector.update();
       if(this.input.focusNext){
         this.focusNextObject();
@@ -125,14 +131,13 @@ define([
           object.radarLastIsInFront = isInFront;
         }
 
-        if(oldLeft.toFixed(1) != left.toFixed(1)){
-          style.left = ( ( left / 2 + 50 ) - 3 ).toFixed(1) + '%'; // adjust by approx. half char-size
-          object.radarLastLeft = left;
-        }
-
-        if(oldTop.toFixed(1) != top.toFixed(1)){
-          style.top = ( ( top / 2 + 50) - 4 ).toFixed(1)  + '%'; // adjust by approx. half char-size
+        if(oldLeft.toFixed(1) != left.toFixed(1) || oldTop.toFixed(1) != top.toFixed(1)){
+          style.webkitTransform = 'translate3d(' +
+            ( ( left / 2 + 50 ) - 3 ) * this.size / 100 + 'px,' +
+            ( ( top  / 2 + 50 ) - 4 ) * this.size / 100 + 'px,' +
+            '0)';
           object.radarLastTop = top;
+          object.radarLastLeft = left;
         }
 
         if(this.input.focusNext){
