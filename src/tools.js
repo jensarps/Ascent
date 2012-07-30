@@ -34,6 +34,10 @@ define([], function(){
         parentNode.appendChild(node);
       }
       return node;
+    },
+
+    clamp: function(min, max, value){
+      return Math.min(max, Math.max(min, value));
     }
 
   };
