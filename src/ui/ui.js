@@ -110,8 +110,10 @@ define([
       var isFullscreen = document.fullscreenEnabled;
       if(isFullscreen){
         document.exitFullscreen();
+        GameShim.supports.pointerLock && document.exitPointerLock();
       }else{
         document.documentElement.requestFullScreen();
+        GameShim.supports.pointerLock && document.documentElement.requestPointerLock();
       }
     },
 
