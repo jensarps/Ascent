@@ -19,6 +19,8 @@
 
 #radar .object {
     position: absolute;
+    top: 0;
+    left: 0;
 }
 
 #radarInfo {
