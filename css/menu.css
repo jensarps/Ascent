@@ -49,7 +49,7 @@
     -moz-transition: text-shadow 400ms, color 400ms;
 }
 
-#menu .menu-item:hover {
+#menu .menu-item.current {
     text-shadow: 0 0 3px #1f4dff;
     color: #3d69ff;
     /* color: #65a6ff; */
