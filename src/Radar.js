@@ -54,7 +54,7 @@ define([
       var index = this.objects.length;
       object.radarIndex = index;
       this.objects[index] = object;
-      this.nodes[index] = this.createObjectNode();
+      this.nodes[index] = object.node = this.createObjectNode();
     },
 
     removeObject: function(id){
@@ -107,18 +107,42 @@ define([
       this.radarDetector.update();
       if(this.input.focusNext){
         this.focusNextObject();
-        this.input.focusNext = false;
       }
       this.objects.forEach(function(object, index){
         // TODO: The following is a disaster regarding performance
+
+        var oldLeft = object.radarLastLeft || Infinity,
+            oldTop = object.radarLastTop || Infinity,
+            left = object.radarLeft,
+            top = object.radarTop,
+            oldIsInFront = object.radarLastIsInFront,
+            isInFront = object.radarIsInFront;
+
         var style = this.nodes[index].style;
-        style.left = ( object.radarLeft / 2 + 50 ) - 3 + '%';
-        style.top = ( object.radarTop / 2 + 50) - 4  + '%'; // adjust by approx. half char-size
-        style.color = object.radarIsInFront ? 'paleGreen' : 'silver';
-        if(this.focusedObject){
+
+        if(oldIsInFront !== isInFront){
+          style.color = isInFront ? 'paleGreen' : 'silver';
+          object.radarLastIsInFront = isInFront;
+        }
+
+        if(oldLeft.toFixed(1) != left.toFixed(1)){
+          style.left = ( ( left / 2 + 50 ) - 3 ).toFixed(1) + '%'; // adjust by approx. half char-size
+          object.radarLastLeft = left;
+        }
+
+        if(oldTop.toFixed(1) != top.toFixed(1)){
+          style.top = ( ( top / 2 + 50) - 4 ).toFixed(1)  + '%'; // adjust by approx. half char-size
+          object.radarLastTop = top;
+        }
+
+        if(this.input.focusNext){
           this.nodes[index].innerHTML = object.id == this.focusedObject.id ? '&diams;' : '&loz;';
         }
       }, this);
+
+      if(this.input.focusNext){
+        this.input.focusNext = false;
+      }
 
       if(this.focusedObject){
         var dist = ( tools.getDistance(this.camera.position, this.focusedObject.model.position) / 1000 ).toFixed(2);
