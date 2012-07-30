@@ -46,6 +46,7 @@ define([
       this.radarNode = document.createElement('div');
       this.radarNode.id = 'radar';
       this.cockpit.cockpitNode.appendChild(this.radarNode);
+      this.translateProperty = 'webkitTransform' in this.radarNode.style ? 'webkitTransform' : 'mozTransform'
 
       this.infoNode = document.createElement('div');
       this.infoNode.id = 'radarInfo';
@@ -132,7 +133,7 @@ define([
         }
 
         if(oldLeft.toFixed(1) != left.toFixed(1) || oldTop.toFixed(1) != top.toFixed(1)){
-          style.webkitTransform = 'translate3d(' +
+          style[this.translateProperty] = 'translate3d(' +
             ( ( left / 2 + 50 ) - 3 ) * this.size / 100 + 'px,' +
             ( ( top  / 2 + 50 ) - 4 ) * this.size / 100 + 'px,' +
             '0)';
