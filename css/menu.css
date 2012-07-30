@@ -52,5 +52,5 @@
 #menu .menu-item.current {
     text-shadow: 0 0 3px #1f4dff;
     color: #3d69ff;
-    /* color: #65a6ff; */
+    box-shadow: 0px 0px 20px 1px #3D69FF;
 }
