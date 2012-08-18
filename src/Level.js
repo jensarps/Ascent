@@ -35,6 +35,9 @@ define([
     this.scene = null;
     this.player = null;
 
+    this.objectCollection = [];
+    this.modelCollection = [];
+
     this.started = false;
     this.toLoad = 0;
     this.maxLoad = 0;
@@ -64,11 +67,20 @@ define([
       this._onInit();
     };
 
-    this.onItemLoaded = function (type) {
+    this.onItemLoaded = function (type, entity) {
+      console.log(entity);
       this.toLoad--;
       var msg = ( this.maxLoad - this.toLoad) + '/' + this.maxLoad;
       console.log('loaded ' + msg, type);
       comm.publish('level/asset-loading', msg);
+      if(entity){
+        this.objectCollection.push(entity);
+        if(entity.isCollection){
+          Array.prototype.push.apply(this.modelCollection, entity.models);
+        }else{
+          this.modelCollection.push(entity.model);
+        }
+      }
       this.toLoad || this.onLevelReady();
     };
 
