@@ -46,7 +46,7 @@ define([
       this.input = registry.get('input');
 
       // init camera
-      var camera = this.camera = new THREE.PerspectiveCamera(25, screenUtil.width / screenUtil.height, 50, 1e7);
+      var camera = this.camera = new THREE.PerspectiveCamera(25, screenUtil.width / screenUtil.height, 30, 1e7);
       this.scene.add(camera);
 
       // init controls
