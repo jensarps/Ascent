@@ -4,7 +4,7 @@ define([], function(){
     listeners: {},
 
     publish: function(topic, data){
-      console.log('topic', topic, 'published with data:', data);
+      //console.log('topic', topic, 'published with data:', data);
       if(!this.listeners[topic]){
         return;
       }
@@ -14,7 +14,7 @@ define([], function(){
     },
 
     subscribe: function(topic, callback){
-      console.log('new subscriber for', topic);
+      //console.log('new subscriber for', topic);
       if(!this.listeners[topic]){
         this.listeners[topic] = [];
       }
