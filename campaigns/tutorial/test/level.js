@@ -3,13 +3,15 @@ define([
   'src/Flightplan',
   'src/tools',
   'src/Radar',
-  './schedule'
+  './schedule',
+  'src/Cannon'
 ], function (
   Level,
   Flightplan,
   tools,
   Radar,
-  schedule
+  schedule,
+  Cannon
 ) {
 
   var level = new Level({
@@ -44,6 +46,8 @@ define([
       amount: 20
     });
 
+    this.cannon = new Cannon(this.player.camera, this.scene);
+
   });
 
   level.onBeforeStart(function () {
@@ -57,6 +61,8 @@ define([
   });
 
   level.onUpdate(function (delta) {
+
+    this.cannon.update(delta);
 
     this.pulsarFlightPlan.update(delta);
     this.pulsar.update(delta);

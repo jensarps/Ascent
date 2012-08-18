@@ -32,6 +32,13 @@ define(function(){
       up: true
     },
 
+    cannon: {
+      device: MOUSE,
+      id: 'button',
+      down: true,
+      up: true
+    },
+
     yaw: {
       device: MOUSE,
       id: 'x'
