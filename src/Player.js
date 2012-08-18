@@ -81,8 +81,6 @@ define([
       if (objs.length) {
         objs.some(function (obj) {
           if (obj.distance <= 50) {
-            var entity = obj.object.parent || obj.object;
-            if (entity.name != 'knaan') { // the knaan detection still it broken
               collidingObject = entity;
               return true;
             }
