@@ -24,6 +24,8 @@ define([
 
     initialPosition: null,
 
+    isCollection: false,
+
     controls: null,
 
     model: null,
@@ -77,7 +79,7 @@ define([
 
       this.scene.add(object);
 
-      this.onAddedToScene();
+      this.onAddedToScene(this);
     },
 
     update: function(delta){
