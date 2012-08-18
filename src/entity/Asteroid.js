@@ -41,9 +41,6 @@ define([
     onModelLoaded: function(collada){
       var object = this.model = collada.scene;
 
-      console.log('cloning..');
-      var clone = THREE.SceneUtils.cloneObject(object);
-
       object.scale.x = this.scale.x + Math.random() * 3;
       object.scale.y = this.scale.y + Math.random() * 3;
       object.scale.z = this.scale.z + Math.random() * 3;
