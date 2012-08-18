@@ -64,7 +64,7 @@ define([
       cockpit.addText('hud-force', 'F:');
     },
 
-    detectCollision: function () {
+    detectCollision: function (objects) {
       var collidingObject,
           camera = this.camera,
           projector = this.projector,
@@ -77,10 +77,12 @@ define([
 
       var ray = this.ray;
       ray.setSource(camera.position, target);
-      var objs = ray.intersectObjects(scene.children);
+      var objs = ray.intersectObjects(objects);
       if (objs.length) {
         objs.some(function (obj) {
           if (obj.distance <= 50) {
+            var entity = obj.object;
+            if (entity.name != 'knaan') { // the knaan detection still is broken
               collidingObject = entity;
               return true;
             }
