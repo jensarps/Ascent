@@ -70,9 +70,10 @@ define([
           projector = this.projector,
           vector = this.vector;
 
-      vector.set(0, 0, 0);
       objects = objects || this.level.modelCollection;
 
+      vector.set(0, 0, 1);
+      //vector.getRotationFromMatrix(camera.matrix); // ?
       // no need to reset the projector
       projector.unprojectVector(vector, camera);
       var target = vector.subSelf(camera.position).normalize();
