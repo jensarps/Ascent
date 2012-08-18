@@ -71,11 +71,13 @@ define([
       });
       */
 
+      /*
       var mesh = object.children.filter(function(child){
         return child instanceof THREE.Mesh;
       })[0];
 
       object.geometry = mesh.geometry;
+      */
 
       this.scene.add(object);
 
@@ -87,6 +89,7 @@ define([
 
     destroy: function(){
       this.scene.remove(this.model);
+      delete this.model;
     }
 
   };
