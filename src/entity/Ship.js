@@ -18,7 +18,7 @@ define([
 
     tools.mixin(this, ships[options.type]);
 
-    this.loadModel(options.position);
+    this.loadModel();
   };
 
   Ship.prototype = {
@@ -68,11 +68,13 @@ define([
       });
       */
 
+      /*
       var mesh = object.children.filter(function(child){
         return child instanceof THREE.Mesh;
       })[0];
 
       object.geometry = mesh.geometry;
+      */
 
       this.scene.add(object);
 
@@ -83,7 +85,7 @@ define([
         controls.maxSpeed = this.maxSpeed;
       }
 
-      this.onAddedToScene();
+      this.onAddedToScene(this);
     },
 
     update: function(delta){
@@ -97,6 +99,7 @@ define([
         this.controls.destroy();
       }
       this.scene.remove(this.model);
+      delete this.model;
     }
 
   };
