@@ -15,7 +15,7 @@ define([
     this.scene = scene;
     this.onAddedToScene = onAddedToScene;
 
-    this.asteroids = [];
+    this.models = [];
 
     tools.mixin(this, ships['asteroid']);
 
@@ -39,6 +39,10 @@ define([
     scene: null,
 
     onAddedToScene: null,
+
+    isCollection: true,
+
+    models: null,
 
     loadModel: function(){
       var loader = new THREE.ColladaLoader();
@@ -76,18 +80,20 @@ define([
 
         object.geometry = mesh.geometry;
 
+        this.models.push(object);
         this.scene.add(object);
 
       }
 
-      this.onAddedToScene();
+      this.onAddedToScene(this);
     },
 
     update: function(delta){
     },
 
     destroy: function(){
-      this.scene.remove(this.model);
+      this.models.map(this.scene.remove);
+      delete this.models;
     }
 
   };
