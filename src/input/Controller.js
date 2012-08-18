@@ -37,7 +37,9 @@ define([
           }
         } else if (binding.device == 'mouse') {
           this.bindings[binding.device][binding.id] = {
-            description: description
+            description: description,
+            down: binding.down,
+            up: binding.up
           }
         }
       }, this);
