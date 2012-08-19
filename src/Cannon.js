@@ -72,11 +72,10 @@ define([
 
       var bullet = this.getBullet();
 
-      var _rotation = vector.getRotationFromMatrix(camera.matrix);
-
-      bullet.rotation.x = _rotation.x;
-      bullet.rotation.y = _rotation.y;
-      bullet.rotation.z = _rotation.z;
+      vector.getRotationFromMatrix(camera.matrix);
+      bullet.rotation.x = vector.x;
+      bullet.rotation.y = vector.y;
+      bullet.rotation.z = vector.z;
 
       bullet.position.x = camera.position.x; // + (this.cannonSelect * 7);
       bullet.position.y = camera.position.y; // - 7;
