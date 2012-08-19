@@ -30,6 +30,8 @@ define([
 
     bulletPool: null,
 
+    poolSize: 50,
+
     camera: null,
 
     cannonSelect: 1,
@@ -93,7 +95,7 @@ define([
     },
 
     initBulletPool: function () {
-      for (var i = 0; i < 50; i++) {
+      for (var i = 0; i < this.poolSize; i++) {
         this.bulletPool.push(this.createBullet());
       }
     },
