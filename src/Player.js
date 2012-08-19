@@ -100,9 +100,9 @@ define([
 
 
       var cockpit = this.cockpit,
-        controls = this.controls,
-        vector = this.vector,
-        camera = this.camera;
+          controls = this.controls,
+          vector = this.vector,
+          camera = this.camera;
 
       controls.update(delta);
 

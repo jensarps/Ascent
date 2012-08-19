@@ -108,11 +108,11 @@ define([
     update: function (delta) {
 
       var interval = this.interval,
-        ray = this.ray,
-        targets = this.level.modelCollection,
-        scene = this.scene,
-        bullets = this.bullets,
-        speed = this.speed;
+          ray = this.ray,
+          targets = this.level.modelCollection,
+          scene = this.scene,
+          bullets = this.bullets,
+          speed = this.speed;
 
       this.counter += delta;
       if (this.counter >= interval) {
