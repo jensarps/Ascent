@@ -70,7 +70,7 @@ define([
       this.cannonSelect *= -1;
 
       var camera = this.camera,
-        vector = this.vector;
+          vector = this.vector;
 
       var bullet = this.getBullet();
 
@@ -98,7 +98,7 @@ define([
     getBullet: function () {
       return this.bulletPool.length ?
         this.bulletPool.pop() :
-        new THREE.Mesh(this.geometry, this.material);
+        this.createBullet();
     },
 
     initBulletPool: function () {
@@ -124,10 +124,7 @@ define([
         }
       }
 
-      return;
-
       var bulletHit;
-      var targetsNeedUpdate = false;
 
       for (var i = bullets.length - 1; i >= 0; i--) {
         var bullet = bullets[i];
@@ -137,8 +134,6 @@ define([
         ray.setSource(bullet.position, bullet.direction);
         var intersects = ray.intersectObjects(targets);
         if (intersects.length) {
-              //hit.object.isHit = true;
-              // bullet can't hit more than one target,
           var hit = intersects[0];
           if (hit.distance <= speed) {
 
