@@ -83,11 +83,9 @@ define([
       bullet.position.y = camera.position.y; // - 7;
       bullet.position.z = camera.position.z; // + 5;
 
-      vector.set(0, 0, -1);
-      camera.matrix.rotateAxis(vector);
-      bullet.direction.x = vector.x;
-      bullet.direction.y = vector.y;
-      bullet.direction.z = vector.z;
+      bullet.direction.x = camera.direction.x;
+      bullet.direction.y = camera.direction.y;
+      bullet.direction.z = camera.direction.z;
 
       bullet._lifetime = 0;
 

@@ -47,6 +47,7 @@ define([
 
       // init camera
       var camera = this.camera = new THREE.PerspectiveCamera(25, screenUtil.width / screenUtil.height, 30, 1e7);
+      camera.direction = new THREE.Vector3();
       this.scene.add(camera);
 
       // init controls
@@ -67,19 +68,18 @@ define([
     detectCollision: function (objects) {
       var collidingObject,
           camera = this.camera,
-          projector = this.projector,
           vector = this.vector;
 
       objects = objects || this.level.modelCollection;
 
-      vector.set(0, 0, 1);
-      //vector.getRotationFromMatrix(camera.matrix); // ?
-      // no need to reset the projector
-      projector.unprojectVector(vector, camera);
-      var target = vector.subSelf(camera.position).normalize();
+      vector.set(
+        camera.direction.x,
+        camera.direction.y,
+        camera.direction.z
+      );
 
       var ray = this.ray;
-      ray.setSource(camera.position, target);
+      ray.setSource(camera.position, vector);
       var objs = ray.intersectObjects(objects);
       if (objs.length) {
         objs.some(function (obj) {
@@ -100,9 +100,17 @@ define([
 
 
       var cockpit = this.cockpit,
-        controls = this.controls;
+        controls = this.controls,
+        vector = this.vector,
+        camera = this.camera;
 
       controls.update(delta);
+
+      vector.set(0, 0, -1);
+      camera.matrix.rotateAxis(vector);
+      camera.direction.x = vector.x;
+      camera.direction.y = vector.y;
+      camera.direction.z = vector.z;
 
       // update cockpit. This could use some love.
 
