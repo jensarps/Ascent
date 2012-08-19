@@ -81,6 +81,12 @@ define([
       bullet.position.y = camera.position.y; // - 7;
       bullet.position.z = camera.position.z; // + 5;
 
+      vector.set(0, 0, -1);
+      camera.matrix.rotateAxis(vector);
+      bullet.direction.x = vector.x;
+      bullet.direction.y = vector.y;
+      bullet.direction.z = vector.z;
+
       bullet._lifetime = 0;
 
       this.bullets.push(bullet);
@@ -124,10 +130,9 @@ define([
       for (var i = bullets.length - 1; i >= 0; i--) {
         var bullet = bullets[i];
 
-
         bulletHit = false;
 
-        ray.setSource(bullet.position, bullet.rotation);
+        ray.setSource(bullet.position, bullet.direction);
         var intersects = ray.intersectObjects(targets);
         if (intersects.length) {
           for (var j = 0, m = intersects.length; j < m; j++) {
