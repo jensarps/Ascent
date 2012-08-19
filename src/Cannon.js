@@ -135,31 +135,14 @@ define([
         ray.setSource(bullet.position, bullet.direction);
         var intersects = ray.intersectObjects(targets);
         if (intersects.length) {
-          for (var j = 0, m = intersects.length; j < m; j++) {
-            var hit = intersects[j];
-            if (hit.distance <= speed) {
               //hit.object.isHit = true;
-              //console.log('You hit', hit.object.parent.name);
-              /*
-               hit.object.hitCounter++;
-               var c = hit.object.material.color;
-               c.r += ( (1 - c.r) / 5 );
-               c.g += ( (1 - c.g) / 5 );
-               c.b += ( (1 - c.b) / 5 );
-               */
-              targetsNeedUpdate = true;
-
               // bullet can't hit more than one target,
-              // we should leave the loop here.
-              bulletHit = true;
+          var hit = intersects[0];
+          if (hit.distance <= speed) {
 
-              break;
+            console.log('You hit', hit.object.name);
+            bulletHit = true;
 
-            } else {
-              // hits are ordered by distance, so we can
-              // leave the loop here.
-              break;
-            }
           }
         }
 
