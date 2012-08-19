@@ -12,8 +12,8 @@ define([
     this.vector = new THREE.Vector3();
     this.projector = new THREE.Projector();
 
-    this.geometry = new THREE.SphereGeometry(1);
-    this.material = new THREE.MeshLambertMaterial({ color: 0xffff00 });
+    this.geometry = new THREE.SphereGeometry(0.5);
+    this.material = new THREE.MeshLambertMaterial({ color: 0xff4000 });
 
     this.bullets = [];
     this.bulletPool = [];
