@@ -61,7 +61,9 @@ define([
     vector: null,
 
     createBullet: function () {
-      return new THREE.Mesh(this.geometry, this.material);
+      var bullet = new THREE.Mesh(this.geometry, this.material);
+      bullet.direction = new THREE.Vector3();
+      return bullet;
     },
 
     fire: function () {
