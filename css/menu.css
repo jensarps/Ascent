@@ -30,8 +30,6 @@
     display: block;
 }
 
-
-
 #menu .hidden {
     display: none;
 }
@@ -42,7 +40,7 @@
     border: solid 1px #dddddd;
     border-radius: 3px;
     cursor: pointer;
-    font-family: Audiowide;
+    font-family: Audiowide, "Droid Sans Mono", Verdana, sans-serif;
     color: #98fb98;
     text-shadow: 0 0 0 #98fb98;
     background: rgba(0, 0, 0, 0.5);
@@ -51,8 +49,8 @@
     -moz-transition: text-shadow 400ms, color 400ms;
 }
 
-#menu .menu-item:hover {
+#menu .menu-item.current {
     text-shadow: 0 0 3px #1f4dff;
     color: #3d69ff;
-    /* color: #65a6ff; */
+    box-shadow: 0px 0px 20px 1px #3D69FF;
 }

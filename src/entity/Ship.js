@@ -6,7 +6,10 @@ define([
   ships
 ){
 
+  var idCounter = 0;
+
   var Ship = function(scene, options, onAddedToScene, noControls){
+    this.id = 'ship-' + idCounter++;
     this.name = options.type;
     this.scene = scene;
     this.initialPosition = options.position;

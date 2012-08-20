@@ -4,6 +4,9 @@
 /* cockpit hud */
 @import "cockpit.css";
 
+/* radar  */
+@import "radar.css";
+
 body {
     background: #000;
     color: #eee;

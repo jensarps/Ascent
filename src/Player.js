@@ -2,12 +2,12 @@ define([
   'src/screen-util',
   'src/registry',
   'src/ships',
-  'src/config'
-], function (screenUtil, registry, ships, config) {
+  'src/config',
+  'src/controls/SpaceshipControls'
+], function (screenUtil, registry, ships, config, SpaceshipControls) {
 
-  var Player = function (scene, container, shipType) {
+  var Player = function (scene, shipType) {
     this.scene = scene;
-    this.container = container;
     this.shipStats = ships[shipType];
     this.ray = new THREE.ReusableRay();
 
@@ -27,7 +27,7 @@ define([
 
     cockpitY: 0,
 
-    container: null,
+    input: null,
 
     level: null,
 
@@ -43,15 +43,15 @@ define([
 
       this.timer = registry.get('timer');
       this.level = registry.get('currentLevel');
+      this.input = registry.get('input');
 
       // init camera
       var camera = this.camera = new THREE.PerspectiveCamera(25, screenUtil.width / screenUtil.height, 50, 1e7);
       this.scene.add(camera);
 
       // init controls
-      var controls = this.controls = new THREE.SpaceshipControls(camera, document, config);
+      var controls = this.controls = new SpaceshipControls(camera);
       controls.movementSpeed = 0;
-      controls.domElement = this.container;
       controls.rollSpeed = this.shipStats.rollSpeed;
       controls.maxSpeed = this.shipStats.maxSpeed;
       controls.inertia = this.shipStats.inertia;
@@ -62,14 +62,6 @@ define([
       cockpit.addText('hud-speed', 'SPD:');
       cockpit.addText('hud-thrust', 'PWR:');
       cockpit.addText('hud-force', 'F:');
-
-      this.moveListener = function (evt) {
-        var halfHeight = screenUtil.height / 2;
-        var halfWidth = screenUtil.width / 2;
-        this.cockpitY = ( halfHeight - evt.clientY ) / halfHeight * 0.8 * ( config.controls.invertYAxis ? -1 : 1 );
-        this.cockpitX = ( halfWidth - evt.clientX ) / halfWidth * 0.8;
-      }.bind(this);
-      document.body.addEventListener('mousemove', this.moveListener);
     },
 
     detectCollision: function () {
@@ -82,8 +74,6 @@ define([
       // no need to reset the projector
       projector.unprojectVector(vector, camera);
       var target = vector.subSelf(camera.position).normalize();
-
-      // why is target !== camera.direction? check shooting_at_things!!
 
       var ray = this.ray;
       ray.setSource(camera.position, target);
@@ -108,12 +98,13 @@ define([
 
       var cockpit = this.cockpit,
         controls = this.controls;
-      // TODO: Move player's collision detection in here.
 
       controls.update(delta);
 
       // update cockpit. This could use some love.
 
+      this.cockpitX = this.input.yaw * 0.8;
+      this.cockpitY = this.input.pitch * -0.8;
       cockpit.move(this.cockpitX, this.cockpitY);
 
       var vel = Math.max(0, controls.velocity - controls.breakingForce);
@@ -140,14 +131,10 @@ define([
     onContainerDimensionsChanged: function (width, height) {
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();
-
-      this.controls.onContainerDimensionsChanged(width, height);
     },
 
     destroy: function () {
-      document.body.removeEventListener('mousemove', this.moveListener);
       this.cockpit.destroy();
-      this.controls.destroy();
     }
 
   };

@@ -46,10 +46,10 @@ define([
     this._onUpdate = function () {
     };
 
-    this.setup = function (scene, container) {
+    this.setup = function (scene) {
       this.scene = scene;
 
-      this.player = new Player(scene, container, this.options.playerShip);
+      this.player = new Player(scene, this.options.playerShip);
 
       sceneUtil.addLights(scene);
 

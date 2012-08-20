@@ -2,11 +2,12 @@ define([
   'src/comm',
   'src/level-registry',
   'src/config'
-], function(
+], function (
   comm,
   levelRegistry,
   config
-  ){
+) {
+
   var menu = {
 
     parentNode: null,
@@ -32,7 +33,7 @@ define([
         ]
       },
       options: {
-        items:  [
+        items: [
           { text: 'Toggle Fullscreen', message: 'ui/fullscreen' },
           { text: 'Invert Y-Axis: on', message: 'config/set', data: 'controls.invertYAxis', state: 'on'},
           { text: 'Back', message: 'menu/back' }
@@ -45,18 +46,20 @@ define([
       }
     },
 
-    init: function(parentNode){
+    init: function (parentNode) {
       this.parentNode = parentNode;
       this.history = [];
       this.setupCampaignPage();
       this.show('front');
 
-      comm.subscribe('menu/options', function(){ this.show('options') }.bind(this));
+      comm.subscribe('menu/options', function () {
+        this.show('options')
+      }.bind(this));
       comm.subscribe('menu/show', this.show.bind(this));
       comm.subscribe('menu/back', this.showLast.bind(this));
 
-      this.parentNode.addEventListener('click', function(evt){
-        if(evt.target.classList.contains('menu-item')){
+      this.parentNode.addEventListener('click', function (evt) {
+        if (evt.target.classList.contains('menu-item')) {
           var dataset = evt.target.dataset;
           if (dataset.state) {
             this.toggleState(evt.target);
@@ -67,24 +70,24 @@ define([
       }.bind(this));
     },
 
-    setupCampaignPage:function () {
+    setupCampaignPage: function () {
       this.addPage('campaigns');
 
       for (var campaign in levelRegistry.campaigns) {
         var campaignData = levelRegistry.campaigns[campaign];
         var campaignId = 'campaign-' + campaign;
 
-        console.log('adding', campaignId);
+        //console.log('adding', campaignId);
 
         this.map.campaigns.items.push({
-          text:campaignData.name,
-          message:'menu/show',
-          data:campaignId
+          text: campaignData.name,
+          message: 'menu/show',
+          data: campaignId
         });
 
         var item = this.map[campaignId] = {
-          node:null,
-          items:[]
+          node: null,
+          items: []
         };
 
         levelRegistry.getLevelIdsForCampaign(campaign).forEach(function (level) {
@@ -92,83 +95,87 @@ define([
           var levelData = levelRegistry.levels[level];
 
           item.items.push({
-            text:levelData.name,
-            message:'app/load',
+            text: levelData.name,
+            message: 'app/load',
             data: level
           });
 
         }, this);
 
         item.items.push({
-          text:'Back',
-          message:'menu/back'
+          text: 'Back',
+          message: 'menu/back'
         });
       }
 
       this.map.campaigns.items.push({
-        text:'Back',
-        message:'menu/back'
+        text: 'Back',
+        message: 'menu/back'
       });
     },
 
-    addPage: function(name, items){
+    addPage: function (name, items) {
       this.map[name] = {
         items: items || []
       };
     },
 
-    addItems: function(pageName, items){
-      if(!this.map[pageName]){
+    addItems: function (pageName, items) {
+      if (!this.map[pageName]) {
         return this.addPage(pageName, items);
       }
       this.map[pageName].push.apply(this.map[pageName], items);
     },
 
-    addItem: function(pageName, item){
-      if(!this.map[pageName]){
+    addItem: function (pageName, item) {
+      if (!this.map[pageName]) {
         return this.addPage(pageName, [item]);
       }
       this.map[pageName].push(item);
     },
 
-    show: function(name){
+    show: function (name) {
       this.history.push(name);
-      if(this.currentMenu){
+      if (this.currentMenu) {
         this.currentMenu.node.className = 'hidden';
       }
       this.currentMenu = this.map[name];
-      if(!this.currentMenu.node){
+      if (!this.currentMenu.node) {
         this.currentMenu.node = this.createMenuNode(this.map[name].items);
       }
       this.currentMenu.node.className = 'visible';
+      this.focusItem(0);
     },
 
-    createMenuNode: function(items){
+    createMenuNode: function (items) {
       var node = document.createElement('div');
-      items.forEach(function(item){
+      items.forEach(function (item, index) {
         var itemNode = document.createElement('div');
         itemNode.dataset.topic = item.message;
         itemNode.dataset.data = item.data;
         itemNode.className = 'menu-item';
         itemNode.innerHTML = item.text;
-        if(item.state){
+        itemNode.onmouseover = this.focusItem.bind(this, index);
+        itemNode.dataset.index = index;
+        if (item.state) {
           // need to fetch state from config
           var state = config.getItem(item.data);
           this.setState(itemNode, state ? 'on' : 'off');
         }
         node.appendChild(itemNode);
+        item.node = itemNode;
       }, this);
       this.parentNode.appendChild(node);
       return node;
     },
 
-    showLast: function(){
+    showLast: function () {
       this.history.pop();
       var last = this.history.pop();
       this.show(last);
     },
 
-    toggleState: function(node){
+    toggleState: function (node) {
       var map = ['on', 'off'];
       var state = node.dataset.state;
       var newState = map[(state == 'on') * 1];
@@ -178,10 +185,43 @@ define([
       comm.publish(node.dataset.topic, [node.dataset.data, newState]);
     },
 
-    setState: function(node, newState){
+    setState: function (node, newState) {
       var text = node.innerHTML.split(':')[0];
       node.innerHTML = text + ': ' + newState;
       node.dataset.state = newState;
+    },
+
+    focusNext: function () {
+      var targetIndex = this.currentMenu.focusedItem == this.currentMenu.items.length - 1 ? 0 : this.currentMenu.focusedItem + 1;
+      this.focusItem(targetIndex);
+    },
+
+    focusPrevious: function () {
+      var targetIndex = this.currentMenu.focusedItem == 0 ? this.currentMenu.items.length - 1 : this.currentMenu.focusedItem - 1;
+      this.focusItem(targetIndex);
+    },
+
+    focusItem: function (index) {
+      if (this.currentMenu.focusedItem === index) {
+        return;
+      }
+      this.unfocusItem(this.currentMenu.focusedItem);
+      this.currentMenu.focusedItem = index;
+      this.currentMenu.items[index].node.classList.add('current');
+    },
+
+    unfocusItem: function (index) {
+      this.currentMenu.items[index] && this.currentMenu.items[index].node.classList.remove('current');
+    },
+
+    selectCurrent: function () {
+      var item = this.currentMenu.items[this.currentMenu.focusedItem];
+
+      if (item.state) {
+        this.toggleState(item.node);
+      } else {
+        comm.publish(item.message, item.data);
+      }
     }
   };
 

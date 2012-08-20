@@ -69,10 +69,16 @@ define([
           }
           this.togglePause();
           break;
-
-    			// case 38: /*up*/
-    			// case 40: /*down*/
-    		}
+        case 38: // up
+          menu.focusPrevious();
+          break;
+        case 40: // down
+          menu.focusNext();
+          break;
+        case 13: // enter
+          menu.selectCurrent();
+          break;
+    	}
     },
 
     pauseGame: function(){
@@ -104,8 +110,10 @@ define([
       var isFullscreen = document.fullscreenEnabled;
       if(isFullscreen){
         document.exitFullscreen();
+        GameShim.supports.pointerLock && document.exitPointerLock();
       }else{
         document.documentElement.requestFullScreen();
+        GameShim.supports.pointerLock && document.documentElement.requestPointerLock();
       }
     },
 
