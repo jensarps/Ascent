@@ -47,7 +47,7 @@ define([
     this.pulsarFlightPlan.setSchedule(pulsarSchedule);
     this.pulsarFlightPlan.start();
 
-    var timer = registry.get('timer');
+    var timer = this.timer = registry.get('timer');
     this.winTimeout = timer.setTimeout(function(){
       this.onLevelSuccess(this.options.successMessage);
     }, 70000, this);
