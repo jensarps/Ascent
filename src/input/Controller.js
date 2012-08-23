@@ -29,16 +29,10 @@ define([
         var binding = bindings[description];
         input[description] = 0;
 
-        if(binding.device == 'keyboard'){
-          this.bindings[binding.device][binding.key] = {
-            description: description,
-            down: binding.down,
-            up: binding.up
-          }
-        } else if (binding.device == 'mouse') {
-          this.bindings[binding.device][binding.id] = {
-            description: description
-          }
+        this.bindings[binding.device][binding.inputId] = {
+          description: description,
+          down: binding.down,
+          up: binding.up
         }
       }, this);
     },
