@@ -23,23 +23,23 @@ define([
   };
 
   InputController.prototype = {
+    
+    bindings: {},
 
     setupBindings: function(bindings, input){
       Object.keys(bindings).forEach(function(description){
         var binding = bindings[description];
         input[description] = 0;
 
+        if(!this.bindings[binding.device]){
+          this.bindings[binding.device] = {};
+        }
         this.bindings[binding.device][binding.inputId] = {
           description: description,
           down: binding.down,
           up: binding.up
         }
       }, this);
-    },
-
-    bindings: {
-      keyboard: {},
-      mouse: {}
     },
 
     destroy: function(){
