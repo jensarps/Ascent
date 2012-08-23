@@ -29,6 +29,9 @@ define([
     setupBindings: function(bindings, input){
       Object.keys(bindings).forEach(function(description){
         var binding = bindings[description];
+
+        // set a default value; the value must be readable before
+        // a user input occurs.
         input[description] = 0;
 
         if(!this.bindings[binding.device]){
