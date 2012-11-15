@@ -6,52 +6,52 @@ define(function(){
 
     accelerate: {
       device: KEYBOARD,
-      key: 87, // w
+      inputId: 87, // w
       down: true,
       up: true
     },
 
     decelerate: {
       device: KEYBOARD,
-      key: 83, // s
+      inputId: 83, // s
       down: true,
       up: true
     },
 
     rollLeft: {
       device: KEYBOARD,
-      key: 81, // q
+      inputId: 81, // q
       down: true,
       up: true
     },
 
     rollRight: {
       device: KEYBOARD,
-      key: 69, // e
+      inputId: 69, // e
       down: true,
       up: true
     },
 
     yaw: {
       device: MOUSE,
-      id: 'x'
+      inputId: 'x'
     },
 
     pitch: {
       device: MOUSE,
-      id: 'y'
+      inputId: 'y'
     },
 
     toggleRadar: {
       device: KEYBOARD,
-      key: 82, // r
+      inputId: 82, // r
       down: true,
       up: false
     },
 
     focusNext: {
       device: KEYBOARD,
-      key: 84, // t
+      inputId: 84, // t
       down: true,
       up: false
     }
