@@ -66,4 +66,12 @@ Ascent wouldn't work without the following third party libraries:
 * three.js - https://github.com/mrdoob/three.js/
 * Game Shim - https://github.com/toji/game-shim
 * require.js - https://github.com/jrburke/requirejs
+
+#Child Projects
+
+The following projects are results of the work with Ascent and are now available
+as independent projects on GitHub:
+
+* decoupled-input - https://github.com/jensarps/decoupled-input
 * cockpit.js - https://github.com/jensarps/cockpit.js
+* game-timer - https://github.com/jensarps/game-timer
