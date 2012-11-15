@@ -43,8 +43,8 @@ To see it in action, just:
 #Open Issues
 
 Too many to list here. The first things that I can think of include:
-* Use instances for levels instead of the current mixin approach
-* Level creation needs to be easier
+* ~~Use instances for levels instead of the current mixin approach~~
+* ~~Level creation needs to be easier~~
 * Proper scene cleanup is not working, so you can't start a new level without
 reloading the page
 * Need to be able to save state
