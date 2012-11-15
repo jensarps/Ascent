@@ -10,7 +10,6 @@ define([
   var SpaceshipControls = function (object) {
 
     this.object = object;
-    this.input = registry.get('input');
 
     // initial values
     this.movementSpeed = 0;
@@ -59,14 +58,16 @@ define([
 
     update: function (delta) {
 
-      var acceleration = this.input.accelerate - this.input.decelerate;
+      var input = registry.get('input');
+
+      var acceleration = input.accelerate - input.decelerate;
       this.velocity = Math.min(1, Math.max(0, this.velocity + ( acceleration * 0.015)));
 
-      this.moveState.rollLeft = this.input.rollLeft * 1;
-      this.moveState.rollRight =this.input.rollRight * 1;
+      this.moveState.rollLeft = input.rollLeft;
+      this.moveState.rollRight = input.rollRight;
 
-      this.moveState.yawLeft = this.input.yaw;
-      this.moveState.pitchDown = this.input.pitch;
+      this.moveState.yawLeft = input.yaw;
+      this.moveState.pitchDown = input.pitch;
 
       this.updateMovementVector();
       this.updateRotationVector();

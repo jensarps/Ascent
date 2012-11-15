@@ -42,6 +42,8 @@ define([
       prop = prop[keys[i - 1]];
     }
     prop[keys[keys.length - 1]] = value;
+
+    comm.publish('config/changed', [keyString, value]);
   };
 
   return config;

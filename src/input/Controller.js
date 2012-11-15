@@ -1,57 +1,42 @@
 define([
   'src/registry',
-  'src/input/Keyboard',
-  'src/input/Mouse',
+  'lib/decoupled-input/InputController',
+  'lib/decoupled-input/MouseHandler',
+  'lib/decoupled-input/KeyboardHandler',
+  'lib/decoupled-input/GamepadHandler',
   'src/input/bindings',
-  'src/tools'
+  'src/config',
+  'src/comm'
 ], function(
   registry,
-  Keyboard,
-  Mouse,
+  InputController,
+  MouseHandler,
+  KeyboardHandler,
+  GamepadHandler,
   bindings,
-  tools
+  config,
+  comm
 ){
 
-  var InputController = function(){
-    var input = {};
-    registry.set('input', input);
+  var Controller = function(){
+    InputController.call(this, bindings);
 
-    this.setupBindings(bindings, input);
+    this.registerDeviceHandler(MouseHandler, 'mouse');
+    this.registerDeviceHandler(KeyboardHandler, 'keyboard');
+    this.registerDeviceHandler(GamepadHandler, 'gamepad');
 
-    this.keybord = new Keyboard(this.bindings.keyboard, input);
-    this.mouse = new Mouse(this.bindings.mouse, input);
+    comm.subscribe('config/changed', this.onConfigChanged.bind(this));
+    this.onConfigChanged();
   };
 
-  InputController.prototype = {
+  Controller.prototype = Object.create(InputController.prototype);
+
+  Controller.prototype.onConfigChanged = function(){
+    bindings.pitch.invert = !config.controls.invertYAxis; // ????
+    this.updateBindings(bindings);
     
-    bindings: {},
-
-    setupBindings: function(bindings, input){
-      Object.keys(bindings).forEach(function(description){
-        var binding = bindings[description];
-
-        // set a default value; the value must be readable before
-        // a user input occurs.
-        input[description] = 0;
-
-        if(!this.bindings[binding.device]){
-          this.bindings[binding.device] = {};
-        }
-        this.bindings[binding.device][binding.inputId] = {
-          description: description,
-          down: binding.down,
-          up: binding.up
-        }
-      }, this);
-    },
-
-    destroy: function(){
-      this.keybord.destroy();
-      this.mouse.destroy();
-      registry.remove('input');
-    }
-
+    registry.set('input', this.input);
   };
 
-  return InputController;
+  return Controller;
 });
